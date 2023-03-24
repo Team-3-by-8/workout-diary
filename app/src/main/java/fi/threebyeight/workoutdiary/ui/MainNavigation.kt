@@ -1,12 +1,16 @@
 package fi.threebyeight.workoutdiary.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import fi.threebyeight.workoutdiary.ui.screens.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavController(navController: NavHostController) {
     NavHost(
