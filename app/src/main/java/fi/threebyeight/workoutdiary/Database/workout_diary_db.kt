@@ -7,13 +7,13 @@ import androidx.room.RoomDatabase
 
 @Database(
     version = 1,
-    entities = [types::class, weekly_plan::class, activities::class, Streak::class],
+    entities = [types::class, weekly_plan::class, activities::class, streak::class],
     exportSchema = false
 )
 public abstract class workout_diary_db : RoomDatabase() {
 
-    abstract fun getTypesDao(): TypesDao
-    abstract fun getWeekly_planDao(): Weekly_planDao
+    abstract fun getTypesDao(): typesDao
+    abstract fun getWeekly_planDao(): weekly_planDao
 
     abstract fun getActivitiesDao(): activitiesDao
 

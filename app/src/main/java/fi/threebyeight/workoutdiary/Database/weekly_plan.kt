@@ -8,13 +8,13 @@ data class weekly_plan(
     val type_id: Int,
     val duration: Int
 )
-data class weekly_planTypeName(
+data class weekly_planWithTypeNames(
     val type_name: String,
     val duration: Int
 )
 
 @Dao
-interface Weekly_planDao{
+interface weekly_planDao{
     @Insert(entity = weekly_plan::class)
     suspend fun insertNewWeekly_plan(type_id: Int, duration: Int )
 
@@ -27,5 +27,5 @@ interface Weekly_planDao{
                 "FROM types, weekly_plan"+
                 "WHERE activities.type_id = types.id"
     )
-    fun getWeekly_planWithTypeName() : Flow<List<weekly_planTypeName>>
+    fun getWeekly_planWithTypeName() : Flow<List<weekly_planWithTypeNames>>
 }

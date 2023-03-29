@@ -13,7 +13,7 @@ data class types(
 )
 
 @Dao
-public interface TypesDao {
+public interface typesDao {
     @Insert(entity = types::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTypes(type: types)
 
