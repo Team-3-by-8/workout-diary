@@ -15,7 +15,10 @@ data class types(
 @Dao
 public interface typesDao {
     @Insert(entity = types::class, onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTypes(type: types)
+    suspend fun insertType(type: types)
+
+    @Update
+    suspend fun updateType(types: types)
 
     @Delete
     suspend fun deleteType(type: types)

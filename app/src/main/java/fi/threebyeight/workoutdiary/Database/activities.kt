@@ -25,19 +25,17 @@ data class activitiesWithTypeName(
     val type_name: String,
     val date: Date,
     val duration: Int,
-    val max_HR: Int,
-    val min_HR: Int,
-    val average_HR: Int
+    val max_HR: Int?,
+    val min_HR: Int?,
+    val average_HR: Int?
 )
 
 @Dao
 interface activitiesDao {
     @Insert(entity = activities::class)
-    suspend fun insertNewActivity(date: Date, duration: Int, type_id: Int)
+    suspend fun insertActivity(activities: activities)
 
     //I wonder if I do it correctly
-    @Insert(entity = activities::class)
-    suspend fun insertNewActivityWithHR(activities: activities)
 
     @Query("SELECT * FROM Activities ORDER BY date ASC")
     fun getActivitiesByDate(): Flow<List<activities>>

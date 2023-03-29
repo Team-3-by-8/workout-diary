@@ -13,8 +13,8 @@ data class streak(
 
 @Dao
 public interface streakDao {
-    @Insert(entity = streak::class)
-    suspend fun insertStreak(streak: streak)
+    @Update(entity = streak::class)
+    suspend fun updateStreak(streak: streak)
 
     @Query("SELECT * FROM Streak")
     fun getStreak(): Flow<List<streak>>
