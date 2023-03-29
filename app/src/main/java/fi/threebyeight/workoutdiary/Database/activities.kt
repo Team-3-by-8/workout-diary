@@ -33,11 +33,11 @@ data class activitiesWithTypeName(
 @Dao
 interface activitiesDao {
     @Insert(entity = activities::class)
-    fun insertNewActivity(date: Date, duration: Int, type_id: Int)
+    suspend fun insertNewActivity(date: Date, duration: Int, type_id: Int)
 
     //I wonder if I do it correctly
     @Insert(entity = activities::class)
-    fun insertNewActivityWithHR(activities: activities)
+    suspend fun insertNewActivityWithHR(activities: activities)
 
     @Query("SELECT * FROM Activities ORDER BY date ASC")
     fun getActivitiesByDate(): Flow<List<activities>>

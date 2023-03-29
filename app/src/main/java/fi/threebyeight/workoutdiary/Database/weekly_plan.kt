@@ -16,10 +16,10 @@ data class weekly_planTypeName(
 @Dao
 interface Weekly_planDao{
     @Insert(entity = weekly_plan::class)
-    fun insertNewWeekly_plan(type_id: Int, duration: Int )
+    suspend fun insertNewWeekly_plan(type_id: Int, duration: Int )
 
     @Delete
-    public fun deleteWeekly_planByTypeId(type_id: Int)
+    suspend fun deleteWeekly_planByTypeId(type_id: Int)
 
     @Query(
         "SELECT weekly_plan.duration AS duration, "+
