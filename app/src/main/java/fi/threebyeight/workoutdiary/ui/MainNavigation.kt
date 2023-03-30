@@ -20,7 +20,7 @@ fun AppNavController(navController: NavHostController) {
         startDestination = "Workout"
     ) {
         composable(route = "Workout") {
-            WorkoutScreen()
+            WorkoutScreen(navController)
         }
         composable(route = "Journal") {
             JournalScreen()
@@ -30,6 +30,12 @@ fun AppNavController(navController: NavHostController) {
         }
         composable(route = "About") {
             AboutScreen()
+        }
+        composable(route = "WorkoutNew") {
+            WorkoutNewScreen()
+        }
+        composable(route = "WorkoutAdd") {
+            WorkoutAddScreen()
         }
     }
 }

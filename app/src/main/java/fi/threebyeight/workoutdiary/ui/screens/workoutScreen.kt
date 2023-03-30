@@ -10,12 +10,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.navigation.NavController
 
 @Composable
-fun WorkoutScreen() {
+fun WorkoutScreen(navController: NavController) {
     val buttonModifier = Modifier
         .fillMaxWidth()
         .height(45.dp)
+    Text(
+        text= "Workout",
+        modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
+    )
     Column(
         modifier = Modifier
             .padding(horizontal = 70.dp)
@@ -23,14 +28,14 @@ fun WorkoutScreen() {
             .fillMaxWidth()
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("WorkoutNew") },
             modifier = buttonModifier
         ) {
             Text(text = "Start workout")
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("WorkoutAdd") },
             modifier = buttonModifier
         ) {
             Text(text = "Add previous")
