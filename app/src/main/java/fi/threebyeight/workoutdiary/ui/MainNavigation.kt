@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fi.threebyeight.workoutdiary.ui.screens.*
+import fi.threebyeight.workoutdiary.ui.theme.LightGrey
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -35,7 +36,9 @@ fun AppNavController(navController: NavHostController) {
 @Composable
 fun MainNavigation(items: List<TabItem>, navController: NavController) {
     var selectedItem by remember { mutableStateOf(0) }
-    BottomNavigation {
+    BottomNavigation(
+        backgroundColor = LightGrey
+    ) {
         items.forEachIndexed { index, item ->
             BottomNavigationItem(
                 selected = selectedItem == index,
