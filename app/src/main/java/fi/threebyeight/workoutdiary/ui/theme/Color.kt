@@ -11,3 +11,7 @@ val LightGrey = Color(0xFFC0C4C7)
 
 val SomeBlue = Color(0xFF005271)
 val SomeYellow = Color(0xFFFFD600)
+
+val OrangeBrown900 = Color(0xFFBB451F)
+val OrangeBrown500 = Color(0xFFFD6532)
+val OrangeBrown300 = Color(0xFFFD926F)

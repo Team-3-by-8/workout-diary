@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -46,7 +47,9 @@ fun MainNavigation(items: List<TabItem>, navController: NavController) {
                     selectedItem = index
                     navController.navigate(item.route)
                 },
-                icon = { Icon(item.icon, contentDescription = null) }
+                icon = { Icon(item.icon, contentDescription = null) },
+                selectedContentColor = MaterialTheme.colors.primaryVariant,
+                unselectedContentColor = Color.Gray
             )
         }
     }

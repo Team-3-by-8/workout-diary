@@ -15,11 +15,8 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import fi.threebyeight.workoutdiary.ui.theme.LightGrey
-import fi.threebyeight.workoutdiary.ui.theme.NiceGrey
 import fi.threebyeight.workoutdiary.ui.theme.WorkoutDiaryTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +48,7 @@ fun BasicLayout() {
     )
     Scaffold(
         topBar = { TopAppBar(
-            backgroundColor = LightGrey
+            backgroundColor = MaterialTheme.colors.primaryVariant
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
