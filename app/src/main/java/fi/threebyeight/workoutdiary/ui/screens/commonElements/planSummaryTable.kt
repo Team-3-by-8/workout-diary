@@ -1,8 +1,11 @@
 package fi.threebyeight.workoutdiary.ui.screens.commonElements
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,36 +38,50 @@ fun RowScope.TableCell(
 @Composable
 fun PlanSummaryTable() {
     val data = dummyPlanForTesting
-    LazyColumn(
-        Modifier
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(MaterialTheme.colors.primaryVariant, PartialBoxShape)
     ) {
-        items(data) {
-            val (workout, instances, minutes) = it
-            Row(Modifier.fillMaxWidth()) {
-                TableCell(
-                    text = workout,
-                    weight = .6f
-                )
-                TableCell(
-                    text = if (instances == 0) {
-                        "..."
-                    } else {
-                        "x" + instances.toString()
-                    },
-                    weight = .2f
-                )
-                TableCell(
-                    text = if (minutes == 0) {
-                        "..."
-                    } else {
-                        minutes.toString() + " min"
-                    },
-                    weight = .3f,
-                    alignment = Alignment.CenterEnd
-                )
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        ) {
+            items(data) {
+                val (workout, instances, minutes) = it
+                Row(Modifier.fillMaxWidth()) {
+                    TableCell(
+                        text = workout,
+                        weight = .6f
+                    )
+                    TableCell(
+                        text = if (instances == 0) {
+                            "..."
+                        } else {
+                            "x" + instances.toString()
+                        },
+                        weight = .2f
+                    )
+                    TableCell(
+                        text = if (minutes == 0) {
+                            "..."
+                        } else {
+                            minutes.toString() + " min"
+                        },
+                        weight = .3f,
+                        alignment = Alignment.CenterEnd
+                    )
+                }
             }
         }
     }
+}
+
+private val PartialBoxShape = GenericShape { size, _ ->
+    lineTo(size.width / 1.4f, 0f)
+    lineTo(size.width / 1.4f - 50f, 10f)
+    lineTo(10f, 10f)
+    lineTo(10f, size.height - 50f)
+    lineTo(0f, size.height)
 }

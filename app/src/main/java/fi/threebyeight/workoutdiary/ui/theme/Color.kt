@@ -9,7 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 val NiceGrey = Color(0xFF47555E)
 val LightGrey = Color(0xFFC0C4C7)
 val CustomGrey = Color(0xFF56585A)
-val SomeYellow = Color(0xFFFFD600)
+val StreakYellow = Color(0xFFFFD600)
 
 val OrangeBrown900 = Color(0xFFBB451F)
 val OrangeBrown500 = Color(0xFFFD6532)
