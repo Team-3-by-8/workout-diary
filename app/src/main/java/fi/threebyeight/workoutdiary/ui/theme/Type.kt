@@ -1,6 +1,7 @@
 package fi.threebyeight.workoutdiary.ui.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -21,13 +22,26 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = Righteous,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        letterSpacing = 2.sp
+        fontSize = 19.sp,
+        letterSpacing = 2.sp,
+        color = Color.White
+    ),
+    h2 = TextStyle(
+        fontFamily = Righteous,
+        fontWeight = FontWeight.Normal,
+        fontSize = 15.sp,
+        letterSpacing = 1.sp
     ),
     body1 = TextStyle(
         fontFamily = Righteous,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = Righteous,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = CustomGrey
     ),
     button = TextStyle(
         fontFamily = Righteous,

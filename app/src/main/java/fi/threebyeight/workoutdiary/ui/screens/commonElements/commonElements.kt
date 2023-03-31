@@ -15,7 +15,8 @@ import androidx.navigation.NavController
 fun ScreenTitle(title: String) {
     Text(
         text = title,
-        modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
+        style = MaterialTheme.typography.h2,
+        modifier = Modifier.padding(top = 38.dp, start = 35.dp)
     )
 }
 
