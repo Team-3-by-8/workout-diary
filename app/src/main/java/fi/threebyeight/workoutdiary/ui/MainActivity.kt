@@ -10,13 +10,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.ui.theme.WorkoutDiaryTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,10 +43,10 @@ class MainActivity : ComponentActivity() {
 fun BasicLayout() {
     val navController = rememberNavController()
     val items = listOf(
-        TabItem(Icons.Filled.Check, "Workout"),
-        TabItem(Icons.Filled.List, "Journal"),
-        TabItem(Icons.Filled.Edit, "Plan"),
-        TabItem(Icons.Filled.Face, "About")
+        TabItem(ImageVector.vectorResource(id = R.drawable.workout), "Workout"),
+        TabItem(ImageVector.vectorResource(id = R.drawable.journal), "Journal"),
+        TabItem(ImageVector.vectorResource(id = R.drawable.plan), "Plan"),
+        TabItem(ImageVector.vectorResource(id = R.drawable.about), "About")
     )
     Scaffold(
         topBar = { TopAppBar(
