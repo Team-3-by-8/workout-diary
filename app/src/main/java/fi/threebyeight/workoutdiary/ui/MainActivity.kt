@@ -49,17 +49,18 @@ fun BasicLayout() {
         TabItem(ImageVector.vectorResource(id = R.drawable.about), "About")
     )
     Scaffold(
-        topBar = { TopAppBar(
-            backgroundColor = MaterialTheme.colors.primaryVariant
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+        topBar = {
+            TopAppBar(
+                backgroundColor = MaterialTheme.colors.primaryVariant
             ) {
-                Text(text = "Workout Diary", style = MaterialTheme.typography.h1)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Workout Diary", style = MaterialTheme.typography.h1)
+                }
             }
-        }
         },
         content = { padding ->
             Column(

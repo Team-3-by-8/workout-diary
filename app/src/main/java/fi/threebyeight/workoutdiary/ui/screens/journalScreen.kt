@@ -26,10 +26,10 @@ fun JournalScreen() {
 
 @Composable
 fun JournalList(records: List<DummyRecord>) {
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier.padding(8.dp)
-    ){
-        items(records) { record->
+    ) {
+        items(records) { record ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

@@ -28,9 +28,10 @@ fun WorkoutScreen(navController: NavController) {
         Divider(color = Color.Transparent, thickness = 100.dp)
 
         Text(text = "Current plan")
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 30.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 30.dp)
 //            .border(
 //                border = BorderStroke(2.dp, MaterialTheme.colors.primary),
 //                shape = Bo

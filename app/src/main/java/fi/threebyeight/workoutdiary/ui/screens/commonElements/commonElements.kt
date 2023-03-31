@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 @Composable
 fun ScreenTitle(title: String) {
     Text(
-        text= title,
+        text = title,
         modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
     )
 }
