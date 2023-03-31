@@ -13,15 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.model.DummyRecord
 import fi.threebyeight.workoutdiary.model.dummyData
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JournalScreen() {
     Column {
-        Text(
-            text= "Journal",
-            modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
-        )
+        ScreenTitle("Journal")
         JournalList(dummyData)
     }
 }

@@ -6,13 +6,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 
 @Composable
 fun PlanScreen() {
     Column {
-        Text(
-            text= "Your workout plan",
-            modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
-        )
+        ScreenTitle("Your workout plan")
     }
 }

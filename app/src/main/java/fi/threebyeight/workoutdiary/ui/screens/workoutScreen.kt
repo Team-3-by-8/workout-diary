@@ -11,16 +11,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.navigation.NavController
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 
 @Composable
 fun WorkoutScreen(navController: NavController) {
     val buttonModifier = Modifier
         .fillMaxWidth()
         .height(45.dp)
-    Text(
-        text= "Workout",
-        modifier = Modifier.padding(top = 15.dp, bottom = 6.dp, start = 15.dp, end = 15.dp)
-    )
+    ScreenTitle("Workout")
     Column(
         modifier = Modifier
             .padding(horizontal = 70.dp)
