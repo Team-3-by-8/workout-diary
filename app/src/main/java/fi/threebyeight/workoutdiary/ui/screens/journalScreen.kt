@@ -10,7 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.DummyRecord
 import fi.threebyeight.workoutdiary.model.dummyData
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
@@ -19,7 +21,7 @@ import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 @Composable
 fun JournalScreen() {
     Column {
-        ScreenTitle("Journal")
+        ScreenTitle(stringResource(R.string.titleJournal))
         JournalList(dummyData)
     }
 }

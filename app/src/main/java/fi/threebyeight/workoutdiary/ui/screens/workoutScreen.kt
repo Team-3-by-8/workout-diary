@@ -13,8 +13,10 @@ import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.CommonButton
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.PlanSummaryTable
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
@@ -23,19 +25,19 @@ import fi.threebyeight.workoutdiary.ui.theme.StreakYellow
 @Composable
 fun WorkoutScreen(navController: NavController) {
     Column {
-        ScreenTitle("Workout")
+        ScreenTitle(stringResource(R.string.titleWorkout))
         Column(
             modifier = Modifier
                 .padding(horizontal = 70.dp)
                 .padding(top = 30.dp)
                 .fillMaxWidth()
         ) {
-            CommonButton(navController, "Start Now", "WorkoutNew")
+            CommonButton(navController, stringResource(R.string.titleStartNow), "WorkoutNew")
 //        Divider(color = Color.Transparent, thickness = 10.dp)
-            CommonButton(navController, "Add Previous", "WorkoutAdd")
+            CommonButton(navController, stringResource(R.string.titleAddPrevious), "WorkoutAdd")
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
-        ScreenTitle("Remaining Plan")
+        ScreenTitle(stringResource(R.string.titleRemainingPlan))
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -84,7 +86,10 @@ fun StreakCounter() {
                 verticalAlignment = Alignment.Bottom,
             ) {
                 Text(
-                    text = "Streak  ", fontSize = 14.sp, style = MaterialTheme.typography.h2
+                    text = stringResource(R.string.streak),
+                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.padding(end = 10.dp)
                 )
                 Text(
                     text = "30", fontSize = 24.sp

@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
@@ -58,7 +59,10 @@ fun BasicLayout() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Workout Diary", style = MaterialTheme.typography.h1)
+                    Text(
+                        text = stringResource(R.string.titleTopAppBar),
+                        style = MaterialTheme.typography.h1
+                    )
                 }
             }
         },

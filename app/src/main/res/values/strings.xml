@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Workout Diary</string>
+    <string name="titleTopAppBar">Workout Diary</string>
+    <string name="titleWorkout">Workout</string>
+    <string name="titleStartNow">Start Now</string>
+    <string name="titleAddPrevious">Add Previous</string>
+    <string name="titleJournal">Journal</string>
+    <string name="titlePlan">Your workout plan</string>
+    <string name="titleAbout">About</string>
+    <string name="titleRemainingPlan">Remaining Plan</string>
+    <string name="streak">Streak</string>
 </resources>

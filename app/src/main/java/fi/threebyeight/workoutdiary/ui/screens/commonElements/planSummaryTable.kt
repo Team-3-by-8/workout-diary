@@ -59,7 +59,7 @@ fun PlanSummaryTable() {
                         text = if (instances == 0) {
                             "..."
                         } else {
-                            "x" + instances.toString()
+                            "x$instances"
                         },
                         weight = .2f
                     )
@@ -67,7 +67,7 @@ fun PlanSummaryTable() {
                         text = if (minutes == 0) {
                             "..."
                         } else {
-                            minutes.toString() + " min"
+                            "$minutes min"
                         },
                         weight = .3f,
                         alignment = Alignment.CenterEnd
