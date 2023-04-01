@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -49,13 +50,41 @@ fun ArrowButton(navController: NavController, route: String) {
 }
 
 @Composable
-fun CommonButton(navController: NavController, title: String, route: String) {
+fun ScreenSubTitle(title: String) {
+    Row(
+        modifier = Modifier
+            .padding(top = 33.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h2,
+        )
+    }
+}
+
+@Composable
+fun CommonButton(
+    title: String,
+    navController: NavController? = null,
+    route: String? = null,
+    color: Color = MaterialTheme.colors.primary
+) {
     Button(
-        onClick = { navController.navigate(route) },
+        onClick = {
+            if (navController != null && route != null) {
+                navController.navigate(route)
+            } else {
+                /*TODO*/
+            }
+        },
+        colors = ButtonDefaults.buttonColors(backgroundColor = color),
         modifier = Modifier
             .fillMaxWidth()
             .height(54.dp)
-            .padding(bottom = 10.dp),
+            .padding(bottom = 10.dp)
+            .background(color),
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
     ) {
         Box(
@@ -69,7 +98,6 @@ fun CommonButton(navController: NavController, title: String, route: String) {
             )
             Box(
                 modifier = Modifier
-//                    .fillMaxHeight()
                     .aspectRatio(1f)
                     .background(White, RightArrowShape)
                     .align(Alignment.CenterEnd)

@@ -29,11 +29,11 @@ fun WorkoutScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(horizontal = 70.dp)
-                .padding(top = 30.dp)
+                .padding(top = 17.dp)
                 .fillMaxWidth()
         ) {
-            CommonButton(navController, stringResource(R.string.titleStartNow), "WorkoutNew")
-            CommonButton(navController, stringResource(R.string.titleAddPrevious), "WorkoutAdd")
+            CommonButton(stringResource(R.string.titleStartNow), navController, "WorkoutNew")
+            CommonButton(stringResource(R.string.titleAddPrevious), navController, "WorkoutAdd")
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
         ScreenTitle(stringResource(R.string.titleRemainingPlan))
@@ -42,10 +42,6 @@ fun WorkoutScreen(navController: NavController) {
                 .weight(1f)
                 .fillMaxWidth()
                 .padding(horizontal = 53.dp, vertical = 10.dp)
-//                .background(Color.Cyan)
-//                .border(
-//                    border = BorderStroke(3.dp, MaterialTheme.colors.primaryVariant),
-//                )
         ) {
             PlanSummaryTable()
         }
