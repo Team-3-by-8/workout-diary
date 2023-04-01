@@ -33,7 +33,6 @@ fun WorkoutScreen(navController: NavController) {
                 .fillMaxWidth()
         ) {
             CommonButton(navController, stringResource(R.string.titleStartNow), "WorkoutNew")
-//        Divider(color = Color.Transparent, thickness = 10.dp)
             CommonButton(navController, stringResource(R.string.titleAddPrevious), "WorkoutAdd")
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
