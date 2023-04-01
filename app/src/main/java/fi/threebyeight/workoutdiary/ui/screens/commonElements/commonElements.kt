@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
@@ -79,12 +80,18 @@ fun CommonButton(
                 /*TODO*/
             }
         },
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 10.dp,
+            pressedElevation = 5.dp,
+            disabledElevation = 0.dp,
+        ),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
         modifier = Modifier
             .fillMaxWidth()
             .height(54.dp)
             .padding(bottom = 10.dp)
-            .background(color),
+            .background(color)
+            .shadow(elevation = 5.dp, ambientColor = Color.Black, spotColor = Color.Black),
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
     ) {
         Box(

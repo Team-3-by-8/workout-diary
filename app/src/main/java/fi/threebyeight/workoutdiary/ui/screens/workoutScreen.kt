@@ -10,16 +10,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.GenericShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.CommonButton
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.PlanSummaryTable
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
+import fi.threebyeight.workoutdiary.ui.theme.OrangeBrown900
+import fi.threebyeight.workoutdiary.ui.theme.Righteous
 import fi.threebyeight.workoutdiary.ui.theme.StreakYellow
 
 @Composable
@@ -70,7 +76,13 @@ fun StreakCounter() {
                 .align(Alignment.Bottom)
                 .width(140.dp)
                 .height(70.dp)
-                .background(StreakYellow, StreakShape),
+                .background(StreakYellow, StreakShape)
+                .shadow(
+                    elevation = 2.dp,
+                    ambientColor = OrangeBrown900,
+                    spotColor = OrangeBrown900,
+                    shape = StreakShape
+                ),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom,
         ) {
@@ -82,12 +94,30 @@ fun StreakCounter() {
             ) {
                 Text(
                     text = stringResource(R.string.streak),
-                    fontSize = 14.sp,
-                    style = MaterialTheme.typography.h2,
-                    modifier = Modifier.padding(end = 10.dp)
+                    style = TextStyle(
+                        fontFamily = Righteous,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        letterSpacing = 1.sp,
+                        shadow = Shadow(
+                            color = Color.Black,
+                            offset = Offset(0.3f, 1.1f),
+                            blurRadius = 1f
+                        )
+                    ),
+                    modifier = Modifier.padding(end = 9.dp)
                 )
                 Text(
-                    text = "30", fontSize = 24.sp
+                    text = "30",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        shadow = Shadow(
+                            color = Color.Black,
+                            offset = Offset(2f, 4f),
+                            blurRadius = 2f
+                        )
+                    ),
+                    modifier = Modifier.padding(end = 1.dp)
                 )
             }
         }
