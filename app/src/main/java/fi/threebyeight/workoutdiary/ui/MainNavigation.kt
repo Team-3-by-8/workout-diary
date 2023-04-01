@@ -32,10 +32,10 @@ fun AppNavController(navController: NavHostController) {
             AboutScreen()
         }
         composable(route = "WorkoutNew") {
-            WorkoutNewScreen()
+            WorkoutNewScreen(navController)
         }
         composable(route = "WorkoutAdd") {
-            WorkoutAddScreen()
+            WorkoutAddScreen(navController)
         }
     }
 }
