@@ -1,15 +1,14 @@
 package fi.threebyeight.workoutdiary.Database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 
 @Database(
     version = 1,
     entities = [types::class, weekly_plan::class, activities::class, streak::class],
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 public abstract class workout_diary_db : RoomDatabase() {
 
     abstract fun getTypesDao(): typesDao

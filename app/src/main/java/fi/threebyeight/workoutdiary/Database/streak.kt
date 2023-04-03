@@ -3,6 +3,7 @@ package fi.threebyeight.workoutdiary.Database
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
+@Entity
 data class streak(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
@@ -17,7 +18,7 @@ public interface streakDao {
     suspend fun updateStreak(streak: streak)
 
     @Query("SELECT * FROM Streak")
-    fun getStreak(): Flow<List<streak>>
+    fun getStreak(): List<streak>
 
 
 }

@@ -2,6 +2,7 @@ package fi.threebyeight.workoutdiary.Database
 
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
+
 //Please, call everything connected to the Database from this repository.
 class database_Repository(
     private val streakDao: streakDao,
@@ -12,11 +13,13 @@ class database_Repository(
 
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
-    val streak: Flow<List<streak>> = streakDao.getStreak()
-    val activities: Flow<List<activities>> = activitiesDao.getActivitiesByDate()
-    val activitiesWithTypeName: Flow<List<activitiesWithTypeName>> = activitiesDao.getActivitiesWithTypeNames()
-    val types: Flow<List<types>> = typesDao.getTypes()
-    val weekly_planWithTypeNames: Flow<List<weekly_planWithTypeNames>> = weekly_planDao.getWeekly_planWithTypeName()
+    val streak: List<streak> = streakDao.getStreak()
+    val activities: List<activitiesWithTypeNames> = activitiesDao.getActivities()
+
+    //    val activitiesWithTypeName: Flow<List<activitiesWithTypeName>> = activitiesDao.getActivitiesWithTypeNames()
+    val types: List<types> = typesDao.getTypes()
+    val weekly_planWithTypeNames: List<weekly_planWithTypeNames> =
+        weekly_planDao.getWeekly_planWithTypeName()
 
 
     // We can try using it just using Dao, ignoring the Repository
@@ -25,30 +28,32 @@ class database_Repository(
     suspend fun insertStreak(streak: streak) {
         streakDao.updateStreak(streak)
     }
-    suspend fun insertActivities(activities: activities){
+
+    suspend fun insertActivities(activities: activities) {
         activitiesDao.insertActivity(activities)
     }
-    suspend fun updateStreak(streak: streak){
+
+    suspend fun updateStreak(streak: streak) {
         streakDao.updateStreak(streak)
     }
 
-    suspend fun insertWeekly_plan(weekly_plan: weekly_plan){
+    suspend fun insertWeekly_plan(weekly_plan: weekly_plan) {
         weekly_planDao.insertNewWeekly_plan(weekly_plan)
     }
 
-    suspend fun deleteWeekly_plan(weekly_plan: weekly_plan){
+    suspend fun deleteWeekly_plan(weekly_plan: weekly_plan) {
         weekly_planDao.deleteWeekly_plan(weekly_plan = weekly_plan)
     }
 
-    suspend fun deleteType(types: types){
+    suspend fun deleteType(types: types) {
         typesDao.deleteType(types)
     }
 
-    suspend fun insertType(types: types){
+    suspend fun insertType(types: types) {
         typesDao.insertType(types)
     }
 
-    suspend fun updateType(types: types){
+    suspend fun updateType(types: types) {
         typesDao.updateType(types)
     }
 
