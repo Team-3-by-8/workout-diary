@@ -7,7 +7,7 @@ import java.util.Date
 @Entity
 data class activities(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int? = null,
     val date: java.sql.Date,
     //in minutes
     val duration: Int,
