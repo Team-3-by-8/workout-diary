@@ -18,7 +18,7 @@ fun WorkoutAddScreen(navController: NavController) {
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SelectionMain(dummyWorkoutTypeList)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = false)
         }
         Row(
             modifier = Modifier

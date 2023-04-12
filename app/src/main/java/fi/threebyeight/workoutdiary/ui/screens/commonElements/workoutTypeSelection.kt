@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.model.WorkoutType
 
 @Composable
-fun SelectionMain(types: List<WorkoutType>) {
+fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     var chosenWorkout by remember { mutableStateOf("") }
 
     Column {
@@ -26,7 +26,7 @@ fun SelectionMain(types: List<WorkoutType>) {
         if (chosenWorkout.isEmpty()) {
             WorkoutTypeSelection(setChosenWorkout = { chosenWorkout = it }, types)
         } else {
-            WorkoutConfirmation(chosenWorkout, setChosenWorkout = { chosenWorkout = it })
+            WorkoutConfirmation(chosenWorkout, setChosenWorkout = { chosenWorkout = it }, RecordNew)
         }
     }
 }
@@ -93,7 +93,7 @@ fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
 fun WorkoutConfirmation(
     chosenWorkout: String,
     setChosenWorkout: (String) -> Unit,
-    RecordNew: Boolean = true
+    RecordNew: Boolean
 ) {
     val bottomButtonTitle = if (RecordNew) "Start" else "Save"
 
