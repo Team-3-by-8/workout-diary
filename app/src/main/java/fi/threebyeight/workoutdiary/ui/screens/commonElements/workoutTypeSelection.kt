@@ -28,13 +28,26 @@ import fi.threebyeight.workoutdiary.model.WorkoutType
 @Composable
 fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     var chosenWorkout by remember { mutableStateOf("") }
+    var readyToSave by remember { mutableStateOf(false) }
 
-    Column {
-        ScreenSubTitle("Select Workout")
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         if (chosenWorkout.isEmpty()) {
+            ScreenSubTitle("Select Workout")
             WorkoutTypeSelection(setChosenWorkout = { chosenWorkout = it }, types)
+        } else if (!readyToSave) {
+            ScreenSubTitle("Select Workout")
+            WorkoutChoiceConfirmation(
+                chosenWorkout,
+                setChosenWorkout = { chosenWorkout = it },
+                RecordNew,
+                setReadyToSave = { readyToSave = it }
+            )
         } else {
-            WorkoutConfirmation(chosenWorkout, setChosenWorkout = { chosenWorkout = it }, RecordNew)
+            WorkoutRecord()
+            Spacer(modifier = Modifier.weight(1f))
+            SaveRecordConfirmation("Save the record?")
         }
     }
 }
@@ -154,12 +167,12 @@ fun InputBox(
 }
 
 @Composable
-fun WorkoutConfirmation(
+fun WorkoutChoiceConfirmation(
     chosenWorkout: String,
     setChosenWorkout: (String) -> Unit,
-    RecordNew: Boolean
+    RecordNew: Boolean,
+    setReadyToSave: (Boolean) -> Unit
 ) {
-    val bottomButtonTitle = if (RecordNew) "Start" else "Save"
 
     Column(
         modifier = Modifier
@@ -238,10 +251,81 @@ fun WorkoutConfirmation(
         Row {
             Spacer(modifier = Modifier.weight(1.5f))
             Box(modifier = Modifier.weight(1f)) {
-                SelectionButton(title = bottomButtonTitle, onClick = { /*TODO*/ })
+                SelectionButton(
+                    title = if (RecordNew) "Start" else "Save",
+                    onClick = { setReadyToSave(true) })
             }
         }
     }
 }
 
+val commonModifier = Modifier
+    .fillMaxWidth()
+    .padding(horizontal = 80.dp)
 
+@Composable
+fun WorkoutRecord() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "Scuba Diving",
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 100.dp, bottom = 17.dp)
+        )
+        Row(
+            modifier = commonModifier.padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Date")
+            Text("12.04")
+        }
+        Row(
+            modifier = commonModifier.padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Duration")
+            Text("30 min")
+        }
+    }
+}
+
+@Composable
+fun SaveRecordConfirmation(
+    theQuestion: String,
+    leftChoice: (String) -> Unit = { /*TODO*/ },
+    rightChoice: (String) -> Unit = { /*TODO*/ }
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 7.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            theQuestion,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(bottom = 14.dp)
+        )
+        Row(
+            modifier = commonModifier,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                SelectionButton(
+                    "Yes",
+                    { rightChoice },
+                    MaterialTheme.colors.primary
+                )
+            }
+            Spacer(modifier = Modifier.weight(0.2f))
+            Box(modifier = Modifier.weight(1f)) {
+                SelectionButton(
+                    "No", { leftChoice },
+                    Color.LightGray
+                )
+            }
+        }
+    }
+}

@@ -32,6 +32,12 @@ val Typography = Typography(
         fontSize = 15.sp,
         letterSpacing = 1.sp
     ),
+    h6 = TextStyle(
+        fontFamily = Righteous,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+        letterSpacing = 1.sp
+    ),
     body1 = TextStyle(
         fontFamily = Righteous,
         fontWeight = FontWeight.Normal,
