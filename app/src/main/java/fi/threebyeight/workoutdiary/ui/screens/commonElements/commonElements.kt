@@ -148,13 +148,13 @@ fun SelectionButton(
     }
 }
 
-private val RightArrowShape = GenericShape { size, _ ->
+val RightArrowShape = GenericShape { size, _ ->
     lineTo(size.width, size.height / 2f)
     lineTo(0f, size.height)
     lineTo(size.width - 20f, size.height / 2f)
 }
 
-private val LeftArrowShape = GenericShape { size, _ ->
+val LeftArrowShape = GenericShape { size, _ ->
     moveTo(size.width, 0f)
     lineTo(0f, size.height / 2f)
     lineTo(size.width, size.height)

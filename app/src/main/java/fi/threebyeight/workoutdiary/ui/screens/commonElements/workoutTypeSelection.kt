@@ -54,8 +54,11 @@ fun WorkoutTypeSelection(
     ) {
         item {
             AddNewWorkout(
-                workoutNameInput = workoutNameInput,
-                onValueChange = { workoutNameInput = it }
+                setChosenWorkout,
+                workoutNameInput,
+                onValueChange = {
+                    workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
+                }
             )
         }
         items(types) { type ->
@@ -67,7 +70,24 @@ fun WorkoutTypeSelection(
 }
 
 @Composable
-fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
+fun AddNewWorkout(
+    setChosenWorkout: (String) -> Unit,
+    workoutNameInput: String,
+    onValueChange: (String) -> Unit
+) {
+
+    val submitButton = @Composable {
+        Button(
+            onClick = { setChosenWorkout(workoutNameInput) },
+            modifier = Modifier
+                .padding(end = 7.dp)
+                .height(30.dp)
+                .aspectRatio(1f),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+            shape = RightArrowShape
+        ) {}
+    }
+
     TextField(
         value = workoutNameInput,
         onValueChange = onValueChange,
@@ -79,7 +99,7 @@ fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
                 modifier = Modifier
             )
         },
-        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Left),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = White,
             focusedIndicatorColor = Color.Transparent,
@@ -87,6 +107,7 @@ fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
         ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        trailingIcon = if (workoutNameInput.length > 2) submitButton else null,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
@@ -125,7 +146,7 @@ fun InputBox(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 10.dp)
+            .padding(bottom = 5.dp)
             .scale(scaleY = 0.9F, scaleX = 1F)
             .height(54.dp)
             .border(width = 2.dp, Black)
