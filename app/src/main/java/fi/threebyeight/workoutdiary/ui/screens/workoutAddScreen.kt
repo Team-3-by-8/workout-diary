@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.dummyWorkoutTypeList
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
-import fi.threebyeight.workoutdiary.ui.screens.commonElements.WorkoutTypeSelection
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionMain
 
 @Composable
 fun WorkoutAddScreen(navController: NavController) {
@@ -18,7 +18,7 @@ fun WorkoutAddScreen(navController: NavController) {
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            WorkoutTypeSelection(dummyWorkoutTypeList)
+            SelectionMain(dummyWorkoutTypeList)
         }
         Row(
             modifier = Modifier

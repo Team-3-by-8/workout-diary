@@ -11,16 +11,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.model.WorkoutType
 
 @Composable
-fun WorkoutTypeSelection(types: List<WorkoutType>) {
+fun SelectionMain(types: List<WorkoutType>) {
+    var chosenWorkout by remember { mutableStateOf("") }
+
+    Column {
+        ScreenSubTitle("Select Workout")
+        if (chosenWorkout.isEmpty()) {
+            WorkoutTypeSelection(setChosenWorkout = { chosenWorkout = it }, types)
+        } else {
+            WorkoutConfirmation(chosenWorkout, setChosenWorkout = { chosenWorkout = it })
+        }
+    }
+}
+
+@Composable
+fun WorkoutTypeSelection(
+    setChosenWorkout: (String) -> Unit,
+    types: List<WorkoutType>
+) {
     var workoutNameInput by remember { mutableStateOf("") }
 
-    ScreenSubTitle("Select Workout")
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 70.dp)
@@ -28,14 +45,16 @@ fun WorkoutTypeSelection(types: List<WorkoutType>) {
             .fillMaxWidth()
     ) {
         item {
-//            CommonButton(title = "Add New Workout...", color = Color.LightGray)
             AddNewWorkout(
                 workoutNameInput = workoutNameInput,
                 onValueChange = { workoutNameInput = it })
 
         }
+
         items(types) { type ->
-            CommonButton(title = type.name)
+            SelectionButton(
+                title = type.name,
+                onClick = { setChosenWorkout(type.name) })
         }
     }
 }
@@ -53,10 +72,9 @@ fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
                 modifier = Modifier
             )
         },
-//        placeholder = { Text(text = "placeholder!")},
         textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.White,
+            backgroundColor = White,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
@@ -67,6 +85,36 @@ fun AddNewWorkout(workoutNameInput: String, onValueChange: (String) -> Unit) {
             .padding(bottom = 10.dp)
             .scale(scaleY = 0.9F, scaleX = 1F)
             .height(54.dp)
-            .border(width = 2.dp, Color.Black)
+            .border(width = 2.dp, Black)
     )
 }
+
+@Composable
+fun WorkoutConfirmation(
+    chosenWorkout: String,
+    setChosenWorkout: (String) -> Unit,
+    RecordNew: Boolean = true
+) {
+    val bottomButtonTitle = if (RecordNew) "Start" else "Save"
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 70.dp)
+            .padding(top = 17.dp)
+            .fillMaxWidth()
+    ) {
+        SelectionButton(
+            title = chosenWorkout,
+            onClick = { setChosenWorkout("") }
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Row {
+            Spacer(modifier = Modifier.weight(1.5f))
+            Box(modifier = Modifier.weight(1f)) {
+                SelectionButton(title = bottomButtonTitle, onClick = { /*TODO*/ })
+            }
+        }
+
+    }
+}
+
