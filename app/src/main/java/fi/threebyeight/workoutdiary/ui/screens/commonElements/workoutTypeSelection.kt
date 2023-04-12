@@ -1,6 +1,9 @@
 package fi.threebyeight.workoutdiary.ui.screens.commonElements
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
@@ -9,14 +12,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.WorkoutType
 
 @Composable
@@ -145,7 +151,31 @@ fun WorkoutConfirmation(
             onClick = { setChosenWorkout("") }
         )
         if (RecordNew) {
-            Text(text = "placeholder for HR button")
+            var measurePulse by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(text = "measure")
+                    Text(text = "pulse")
+                }
+                Image(
+                    painter = painterResource(id = R.drawable.sensor_inactive),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(50.dp)
+                        .clickable { measurePulse = !measurePulse }
+                        .background(
+                            if (measurePulse) {
+                                Color(red = 223, green = 66, blue = 102)
+                            } else {
+                                Color.LightGray
+                            }
+                        )
+                )
+            }
         } else {
             var dateInput by remember { mutableStateOf("12.04") }
             var durationInput by remember { mutableStateOf("30") }
