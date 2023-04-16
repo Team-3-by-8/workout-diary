@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -56,12 +57,20 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     datePicker.datePicker.minDate = calendar.timeInMillis - (maxDaysPast * (8.64e+7)).toLong()
     datePicker.datePicker.maxDate = calendar.timeInMillis
 
+    var hideKeyboard by remember { mutableStateOf(false) }
+
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { hideKeyboard = true }
     ) {
         if (chosenWorkout.isEmpty()) {
             ScreenSubTitle("Select Workout")
-            WorkoutTypeSelection(setChosenWorkout = { chosenWorkout = it }, types)
+            WorkoutTypeSelection(
+                setChosenWorkout = { chosenWorkout = it },
+                types,
+                hideKeyboard,
+                setHideKeyboard = { hideKeyboard = it })
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
             WorkoutChoiceConfirmation(
@@ -75,7 +84,9 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
                 setDateInput = { dateInput = it },
                 durationInput,
                 setDurationInput = { durationInput = it },
-                datePicker
+                datePicker,
+                hideKeyboard,
+                setHideKeyboard = { hideKeyboard = it }
             )
         } else {
             WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
@@ -92,7 +103,9 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
 @Composable
 fun WorkoutTypeSelection(
     setChosenWorkout: (String) -> Unit,
-    types: List<WorkoutType>
+    types: List<WorkoutType>,
+    hideKeyboard: Boolean,
+    setHideKeyboard: (Boolean) -> Unit
 ) {
     var workoutNameInput by remember { mutableStateOf("") }
 
@@ -107,7 +120,9 @@ fun WorkoutTypeSelection(
             workoutNameInput,
             onValueChange = {
                 workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
-            }
+            },
+            hideKeyboard = hideKeyboard,
+            onFocusClear = { setHideKeyboard(false) }
         )
     }
     LazyColumn(
@@ -128,9 +143,11 @@ fun WorkoutTypeSelection(
 fun AddNewWorkout(
     setChosenWorkout: (String) -> Unit,
     workoutNameInput: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    hideKeyboard: Boolean = false,
+    onFocusClear: () -> Unit = {},
 ) {
-
+    val focusManager = LocalFocusManager.current
     val submitButton = @Composable {
         Button(
             onClick = { setChosenWorkout(workoutNameInput) },
@@ -170,6 +187,11 @@ fun AddNewWorkout(
             .height(54.dp)
             .border(width = 2.dp, Black)
     )
+
+    if (hideKeyboard) {
+        focusManager.clearFocus()
+        onFocusClear()
+    }
 }
 
 @Composable
@@ -177,8 +199,11 @@ fun InputBox(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
+    hideKeyboard: Boolean = false,
+    onFocusClear: () -> Unit = {},
 ) {
+    val focusManager = LocalFocusManager.current
     TextField(
         label = {
             Text(
@@ -206,6 +231,11 @@ fun InputBox(
             .height(54.dp)
             .border(width = 2.dp, Black)
     )
+
+    if (hideKeyboard) {
+        focusManager.clearFocus()
+        onFocusClear()
+    }
 }
 
 @Composable
@@ -220,7 +250,9 @@ fun WorkoutChoiceConfirmation(
     setDateInput: (String) -> Unit,
     durationInput: String,
     setDurationInput: (String) -> Unit,
-    datePicker: DatePickerDialog
+    datePicker: DatePickerDialog,
+    hideKeyboard: Boolean,
+    setHideKeyboard: (Boolean) -> Unit
 ) {
 
     Column(
@@ -309,7 +341,9 @@ fun WorkoutChoiceConfirmation(
                             }
                         }
                     }
-                }
+                },
+                hideKeyboard = hideKeyboard,
+                onFocusClear = { setHideKeyboard(false) }
             )
         }
         Spacer(modifier = Modifier.weight(1f))
