@@ -16,17 +16,11 @@ fun WorkoutAddScreen(navController: NavController) {
     Column {
         ScreenTitle(stringResource(R.string.titleAddPrevious), navController, "Workout")
         Box(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(bottom = 32.dp)
         ) {
             SelectionMain(dummyWorkoutTypeList, RecordNew = false)
-        }
-        Row(
-            modifier = Modifier
-                .padding(top = 0.dp)
-                .fillMaxWidth()
-                .height(80.dp)
-        ) {
-            StreakCounter()
         }
     }
 }

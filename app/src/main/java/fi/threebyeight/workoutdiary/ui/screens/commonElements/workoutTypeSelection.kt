@@ -92,21 +92,26 @@ fun WorkoutTypeSelection(
 ) {
     var workoutNameInput by remember { mutableStateOf("") }
 
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 70.dp)
+            .padding(top = 17.dp, bottom = 0.dp)
+            .fillMaxWidth()
+    ) {
+        AddNewWorkout(
+            setChosenWorkout,
+            workoutNameInput,
+            onValueChange = {
+                workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
+            }
+        )
+    }
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 70.dp)
-            .padding(top = 17.dp)
+            .padding(top = 0.dp)
             .fillMaxWidth()
     ) {
-        item {
-            AddNewWorkout(
-                setChosenWorkout,
-                workoutNameInput,
-                onValueChange = {
-                    workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
-                }
-            )
-        }
         items(types) { type ->
             SelectionButton(
                 title = type.name,
