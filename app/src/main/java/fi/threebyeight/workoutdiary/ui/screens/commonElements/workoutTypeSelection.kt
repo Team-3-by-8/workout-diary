@@ -364,8 +364,7 @@ fun SaveRecordConfirmation(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 7.dp),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
