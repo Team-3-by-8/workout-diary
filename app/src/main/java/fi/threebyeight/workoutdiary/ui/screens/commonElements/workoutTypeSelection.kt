@@ -80,7 +80,11 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
         } else {
             WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
             Spacer(modifier = Modifier.weight(1f))
-            SaveRecordConfirmation("Save the record?")
+            SaveRecordConfirmation(
+                "Save the record?",
+                leftChoice = { /*TODO*/ },
+                rightChoice = { readyToSave = false }
+            )
         }
     }
 }
@@ -355,8 +359,8 @@ fun WorkoutRecord(workoutType: String, workoutDate: String, workoutDuration: Int
 @Composable
 fun SaveRecordConfirmation(
     theQuestion: String,
-    leftChoice: (String) -> Unit = { /*TODO*/ },
-    rightChoice: (String) -> Unit = { /*TODO*/ }
+    leftChoice: () -> Unit,
+    rightChoice: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -376,14 +380,15 @@ fun SaveRecordConfirmation(
             Box(modifier = Modifier.weight(1f)) {
                 SelectionButton(
                     "Yes",
-                    { rightChoice },
+                    leftChoice,
                     MaterialTheme.colors.primary
                 )
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Box(modifier = Modifier.weight(1f)) {
                 SelectionButton(
-                    "No", { leftChoice },
+                    "No",
+                    rightChoice,
                     Color.LightGray
                 )
             }
