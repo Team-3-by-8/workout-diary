@@ -1,5 +1,7 @@
 package fi.threebyeight.workoutdiary.ui.screens.commonElements
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -28,20 +31,30 @@ import java.util.*
 
 @Composable
 fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
-    var chosenWorkout by remember { mutableStateOf("") }
-
+    val context = LocalContext.current
     val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = String.format("%02d", (calendar.get(Calendar.MONTH) + 1))
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val currentDate = day.toString() + "." + month + "." + year
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH] + 1
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+    val currentDate = "$dayOfMonth/$month/$year"
 
+    var chosenWorkout by remember { mutableStateOf("") }
     var dateInput by remember { mutableStateOf(currentDate) }
     var durationInput by remember { mutableStateOf("30") }
     var measurePulse by remember { mutableStateOf(false) }
     var readyToSave by remember { mutableStateOf(false) }
     val workoutDate = dateInput  // SHOULD BE DATE
     val workoutDuration = durationInput.toIntOrNull() ?: 0
+
+    val datePicker = DatePickerDialog(
+        context,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            dateInput = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+        }, year, month, dayOfMonth
+    )
+    val maxDaysPast = 14
+    datePicker.datePicker.minDate = calendar.timeInMillis - (maxDaysPast * (8.64e+7)).toLong()
+    datePicker.datePicker.maxDate = calendar.timeInMillis
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -61,7 +74,8 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
                 dateInput,
                 setDateInput = { dateInput = it },
                 durationInput,
-                setDurationInput = { durationInput = it }
+                setDurationInput = { durationInput = it },
+                datePicker
             )
         } else {
             WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
@@ -197,6 +211,7 @@ fun WorkoutChoiceConfirmation(
     setDateInput: (String) -> Unit,
     durationInput: String,
     setDurationInput: (String) -> Unit,
+    datePicker: DatePickerDialog
 ) {
 
     Column(
@@ -238,19 +253,40 @@ fun WorkoutChoiceConfirmation(
             val dateInteraction = remember { MutableInteractionSource() }
             val durationInteraction = remember { MutableInteractionSource() }
 
-            InputBox(
-                label = "Date",
+            TextField(
+                readOnly = true,
+                label = {
+                    Text(
+                        text = "Date",
+                        style = MaterialTheme.typography.button,
+                        color = Black,
+                        modifier = Modifier
+                    )
+                },
                 value = dateInput,
                 onValueChange = { setDateInput(it) },
                 interactionSource = dateInteraction.also { interactionSource ->
                     LaunchedEffect(interactionSource) {
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                setDateInput("")
+                                datePicker.show()
                             }
                         }
                     }
-                }
+                },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Right),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+                    .scale(scaleY = 0.9F, scaleX = 1F)
+                    .height(54.dp)
+                    .border(width = 2.dp, Black)
             )
             InputBox(
                 label = "Duration",
