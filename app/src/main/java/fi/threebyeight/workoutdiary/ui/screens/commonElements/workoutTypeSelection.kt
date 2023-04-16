@@ -24,12 +24,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.WorkoutType
+import java.util.*
 
 @Composable
 fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     var chosenWorkout by remember { mutableStateOf("") }
 
-    var dateInput by remember { mutableStateOf("13.04") }
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = String.format("%02d", (calendar.get(Calendar.MONTH) + 1))
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val currentDate = day.toString() + "." + month + "." + year
+
+    var dateInput by remember { mutableStateOf(currentDate) }
     var durationInput by remember { mutableStateOf("30") }
     var measurePulse by remember { mutableStateOf(false) }
     var readyToSave by remember { mutableStateOf(false) }
