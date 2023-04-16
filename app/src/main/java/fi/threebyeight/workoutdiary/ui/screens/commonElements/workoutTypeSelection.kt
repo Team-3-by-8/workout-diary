@@ -298,7 +298,7 @@ fun WorkoutChoiceConfirmation(
                     .border(width = 2.dp, Black)
             )
             InputBox(
-                label = "Duration",
+                label = "Minutes",
                 value = durationInput,
                 onValueChange = { setDurationInput(it) },
                 interactionSource = durationInteraction.also { interactionSource ->
@@ -351,7 +351,7 @@ fun WorkoutRecord(workoutType: String, workoutDate: String, workoutDuration: Int
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Duration")
-            Text(workoutDuration.toString())
+            Text(workoutDuration.toString() + " min")
         }
     }
 }
