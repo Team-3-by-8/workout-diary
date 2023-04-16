@@ -28,7 +28,13 @@ import fi.threebyeight.workoutdiary.model.WorkoutType
 @Composable
 fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     var chosenWorkout by remember { mutableStateOf("") }
+
+    var dateInput by remember { mutableStateOf("13.04") }
+    var durationInput by remember { mutableStateOf("30") }
+    var measurePulse by remember { mutableStateOf(false) }
     var readyToSave by remember { mutableStateOf(false) }
+    val workoutDate = dateInput  // SHOULD BE DATE
+    val workoutDuration = durationInput.toIntOrNull() ?: 0
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -42,10 +48,16 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
                 chosenWorkout,
                 setChosenWorkout = { chosenWorkout = it },
                 RecordNew,
-                setReadyToSave = { readyToSave = it }
+                setReadyToSave = { readyToSave = it },
+                measurePulse,
+                setMeasurePulse = { measurePulse = it },
+                dateInput,
+                setDateInput = { dateInput = it },
+                durationInput,
+                setDurationInput = { durationInput = it }
             )
         } else {
-            WorkoutRecord()
+            WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
             Spacer(modifier = Modifier.weight(1f))
             SaveRecordConfirmation("Save the record?")
         }
@@ -171,7 +183,13 @@ fun WorkoutChoiceConfirmation(
     chosenWorkout: String,
     setChosenWorkout: (String) -> Unit,
     RecordNew: Boolean,
-    setReadyToSave: (Boolean) -> Unit
+    setReadyToSave: (Boolean) -> Unit,
+    measurePulse: Boolean,
+    setMeasurePulse: (Boolean) -> Unit,
+    dateInput: String,
+    setDateInput: (String) -> Unit,
+    durationInput: String,
+    setDurationInput: (String) -> Unit,
 ) {
 
     Column(
@@ -185,7 +203,6 @@ fun WorkoutChoiceConfirmation(
             onClick = { setChosenWorkout("") }
         )
         if (RecordNew) {
-            var measurePulse by remember { mutableStateOf(false) }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
@@ -200,7 +217,7 @@ fun WorkoutChoiceConfirmation(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .size(50.dp)
-                        .clickable { measurePulse = !measurePulse }
+                        .clickable { setMeasurePulse(!measurePulse) }
                         .background(
                             if (measurePulse) {
                                 Color(red = 223, green = 66, blue = 102)
@@ -211,22 +228,18 @@ fun WorkoutChoiceConfirmation(
                 )
             }
         } else {
-            var dateInput by remember { mutableStateOf("12.04") }
-            var durationInput by remember { mutableStateOf("30") }
-            //var date = dateInput  // SHOULD BE DATE
-            //var duration = durationInput.toIntOrNull() ?: 0
             val dateInteraction = remember { MutableInteractionSource() }
             val durationInteraction = remember { MutableInteractionSource() }
 
             InputBox(
                 label = "Date",
                 value = dateInput,
-                onValueChange = { dateInput = it },
+                onValueChange = { setDateInput(it) },
                 interactionSource = dateInteraction.also { interactionSource ->
                     LaunchedEffect(interactionSource) {
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                dateInput = ""
+                                setDateInput("")
                             }
                         }
                     }
@@ -235,12 +248,12 @@ fun WorkoutChoiceConfirmation(
             InputBox(
                 label = "Duration",
                 value = durationInput,
-                onValueChange = { durationInput = it },
+                onValueChange = { setDurationInput(it) },
                 interactionSource = durationInteraction.also { interactionSource ->
                     LaunchedEffect(interactionSource) {
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                durationInput = ""
+                                setDurationInput("")
                             }
                         }
                     }
@@ -264,13 +277,13 @@ val commonModifier = Modifier
     .padding(horizontal = 80.dp)
 
 @Composable
-fun WorkoutRecord() {
+fun WorkoutRecord(workoutType: String, workoutDate: String, workoutDuration: Int) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Scuba Diving",
+            workoutType,
             style = MaterialTheme.typography.h6,
             modifier = Modifier.padding(top = 100.dp, bottom = 17.dp)
         )
@@ -279,14 +292,14 @@ fun WorkoutRecord() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Date")
-            Text("12.04")
+            Text(workoutDate)
         }
         Row(
             modifier = commonModifier.padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Duration")
-            Text("30 min")
+            Text(workoutDuration.toString())
         }
     }
 }
