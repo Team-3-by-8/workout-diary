@@ -3,7 +3,6 @@ package fi.threebyeight.workoutdiary.Database
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
 
-//Please, call everything connected to the Database from this repository.
 class database_Repository(
     private val streakDao: streakDao,
     private val activitiesDao: activitiesDao,
@@ -12,11 +11,9 @@ class database_Repository(
 ) {
 
     // Room executes all queries on a separate thread.
-    // Observed Flow will notify the observer when the data has changed.
     val streak: List<streak> = streakDao.getStreak()
     val activities: List<activitiesWithTypeNames> = activitiesDao.getActivities()
 
-    //    val activitiesWithTypeName: Flow<List<activitiesWithTypeName>> = activitiesDao.getActivitiesWithTypeNames()
     val types: List<types> = typesDao.getTypes()
     val weekly_planWithTypeNames: List<weekly_planWithTypeNames> =
         weekly_planDao.getWeekly_planWithTypeName()

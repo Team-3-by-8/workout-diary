@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 @Entity
 data class types(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int? = null,
     val name: String,
     //not sure if it sets to true
     @ColumnInfo(defaultValue = "1")

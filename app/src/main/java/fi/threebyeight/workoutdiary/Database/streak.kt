@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 @Entity
 data class streak(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Int? = null,
     val streak: Int,
     val freezes: Int,
     val freeze_refill_in: Int
