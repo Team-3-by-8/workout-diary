@@ -3,5 +3,16 @@
 
     <style name="Theme.WorkoutDiary" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialogTheme</item>
     </style>
+
+    <style name="CustomDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/OrangeBrown500</item>
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
+    </style>
+
+    <style name="CustomDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/OrangeBrown900</item>
+    </style>
+
 </resources>

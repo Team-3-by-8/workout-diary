@@ -38,8 +38,16 @@ fun WorkoutScreen(navController: NavController) {
                 .padding(top = 17.dp)
                 .fillMaxWidth()
         ) {
-            CommonButton(stringResource(R.string.titleStartNow), navController, "WorkoutNew")
-            CommonButton(stringResource(R.string.titleAddPrevious), navController, "WorkoutAdd")
+            CommonButton(
+                stringResource(R.string.titleStartNow),
+                navController,
+                "WorkoutNew"
+            )
+            CommonButton(
+                stringResource(R.string.titleAddPrevious),
+                navController,
+                "WorkoutAdd"
+            )
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
         ScreenTitle(stringResource(R.string.titleRemainingPlan))

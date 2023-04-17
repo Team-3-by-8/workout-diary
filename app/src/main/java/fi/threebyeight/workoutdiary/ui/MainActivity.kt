@@ -49,6 +49,7 @@ fun BasicLayout() {
         TabItem(ImageVector.vectorResource(id = R.drawable.plan), "Plan"),
         TabItem(ImageVector.vectorResource(id = R.drawable.about), "About")
     )
+    var showBottomBar by remember { mutableStateOf(true) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -68,11 +69,20 @@ fun BasicLayout() {
         },
         content = { padding ->
             Column(
-                modifier = Modifier
-                    .padding(padding)
-            ) { AppNavController(navController = navController) }
+                modifier = Modifier.padding(padding)
+            ) {
+                AppNavController(
+                    navController = navController,
+                    setShowBottomBar = { showBottomBar = it })
+            }
         },
-        bottomBar = { MainNavigation(items, navController) }
+        bottomBar = {
+            if (showBottomBar) {
+                MainNavigation(items, navController)
+            } else {
+                DisabledMainNavigation()
+            }
+        }
     )
 }
 

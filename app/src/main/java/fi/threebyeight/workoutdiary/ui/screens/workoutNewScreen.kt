@@ -9,24 +9,18 @@ import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.dummyWorkoutTypeList
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
-import fi.threebyeight.workoutdiary.ui.screens.commonElements.WorkoutTypeSelection
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionMain
 
 @Composable
 fun WorkoutNewScreen(navController: NavController) {
     Column {
         ScreenTitle(stringResource(R.string.titleStartNow), navController, "Workout")
         Box(
-            modifier = Modifier.weight(1f)
-        ) {
-            WorkoutTypeSelection(dummyWorkoutTypeList)
-        }
-        Row(
             modifier = Modifier
-                .padding(top = 0.dp)
-                .fillMaxWidth()
-                .height(80.dp)
+                .weight(1f)
+                .padding(bottom = 32.dp)
         ) {
-            StreakCounter()
+            SelectionMain(dummyWorkoutTypeList, RecordNew = true)
         }
     }
 }
