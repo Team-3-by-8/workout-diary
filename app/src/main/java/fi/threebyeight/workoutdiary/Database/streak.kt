@@ -18,7 +18,7 @@ public interface streakDao {
     suspend fun updateStreak(streak: streak)
 
     @Query("SELECT * FROM Streak")
-    fun getStreak(): List<streak>
+    fun getStreak(): Flow<List<streak>>
 
 
 }

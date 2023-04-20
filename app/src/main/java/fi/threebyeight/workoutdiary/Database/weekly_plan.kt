@@ -17,7 +17,7 @@ data class weekly_planWithTypeNames(
         parentColumn = "type_id",
         entityColumn = "id"
     )
-    val types: types
+    val type: type
 )
 
 @Dao
@@ -39,5 +39,5 @@ interface weekly_planDao {
     @Query(
         "SELECT * FROM weekly_plan"
     )
-    fun getWeekly_planWithTypeName(): List<weekly_planWithTypeNames>
+    fun getWeekly_planWithTypeName(): Flow<List<weekly_planWithTypeNames>>
 }

@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Database(
     version = 1,
-    entities = [types::class, weekly_plan::class, activities::class, streak::class],
+    entities = [type::class, weekly_plan::class, activities::class, streak::class],
     exportSchema = false
 )
 @TypeConverters(Converters::class)

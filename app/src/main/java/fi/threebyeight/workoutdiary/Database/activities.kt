@@ -2,7 +2,6 @@ package fi.threebyeight.workoutdiary.Database
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 @Entity
 data class activities(
@@ -24,7 +23,7 @@ data class activitiesWithTypeNames(
         parentColumn = "type_id",
         entityColumn = "id"
     )
-    val types: types
+    val type: type
 )
 
 @Dao
@@ -35,9 +34,9 @@ interface activitiesDao {
     //I wonder if I do it correctly
 
     @Query("SELECT * FROM Activities ORDER BY date ASC")
-    fun getActivitiesByDate(): List<activities>
+    fun getActivitiesByDate(): Flow<List<activities>>
 
     @Transaction
     @Query("SELECT * FROM activities")
-    fun getActivities(): List<activitiesWithTypeNames>
+    fun getActivities(): Flow<List<activitiesWithTypeNames>>
 }
