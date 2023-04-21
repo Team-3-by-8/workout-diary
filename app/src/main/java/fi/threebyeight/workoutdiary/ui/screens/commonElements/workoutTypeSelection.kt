@@ -405,7 +405,7 @@ fun WorkoutRecord(workoutType: String, workoutDate: String, workoutDuration: Int
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Duration")
-            Text(workoutDuration.toString() + " min")
+            Text("$workoutDuration min")
         }
     }
 }
