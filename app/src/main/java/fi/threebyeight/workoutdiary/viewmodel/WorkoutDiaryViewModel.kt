@@ -8,16 +8,27 @@ import fi.threebyeight.workoutdiary.Events.ActivityEvent
 import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) :
     ViewModel() {
     private val _TypeState = MutableStateFlow(TypeState())
-
+    private val _types =
+        repository.types.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    private val _activities =
+        repository.activities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _activitieState = MutableStateFlow(ActivityState())
+    val ActivityState = _activitieState.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        ActivityState()
+    )
+    val typeState = _TypeState.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        TypeState()
+    )
 
     fun onActivityEvent(event: ActivityEvent) {
         when (event) {
@@ -28,6 +39,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     repository.insertActivities(event.activity)
                 }
             }
+
             ActivityEvent.HideDialog -> {
                 _activitieState.update {
                     it.copy(
@@ -35,6 +47,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             ActivityEvent.ShowDialog -> {
                 _activitieState.update {
                     it.copy(
@@ -42,6 +55,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             ActivityEvent.deleteActivity -> TODO()
             is ActivityEvent.setAverage_HR -> {
                 _activitieState.update {
@@ -50,6 +64,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is ActivityEvent.setDate -> {
                 _activitieState.update {
                     it.copy(
@@ -57,6 +72,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is ActivityEvent.setDuration -> {
                 _activitieState.update {
                     it.copy(
@@ -64,6 +80,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is ActivityEvent.setMax_HR -> {
                 _activitieState.update {
                     it.copy(
@@ -71,6 +88,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is ActivityEvent.setMin_HR -> {
                 _activitieState.update {
                     it.copy(
@@ -78,6 +96,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is ActivityEvent.setType_id -> {
                 _activitieState.update {
                     it.copy(
@@ -96,16 +115,23 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     repository.insertType(event.type)
                 }
             }
-            TypeEvent.ShowDialog -> {_TypeState.update{
-                it.copy(
-                    showDialog = true
-                )
-            }}
-            TypeEvent.HideDialog -> {_TypeState.update {
-                it.copy(
-                    showDialog = false
-                )
-            }}
+
+            TypeEvent.ShowDialog -> {
+                _TypeState.update {
+                    it.copy(
+                        showDialog = true
+                    )
+                }
+            }
+
+            TypeEvent.HideDialog -> {
+                _TypeState.update {
+                    it.copy(
+                        showDialog = false
+                    )
+                }
+            }
+
             is TypeEvent.setId -> {
                 _TypeState.update {
                     it.copy(
@@ -113,6 +139,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is TypeEvent.setIsListed -> {
                 _TypeState.update {
                     it.copy(
@@ -120,6 +147,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                     )
                 }
             }
+
             is TypeEvent.setName -> {
                 _TypeState.update {
                     it.copy(
@@ -133,7 +161,6 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
     val activities: Flow<List<activitiesWithTypeNames>> = repository.activities
     var type: List<type> = emptyList<type>()
 
-    val typeState: List<type> = emptyList()
     val streak: Flow<List<streak>> = repository.streak
     val weeklyPlan: Flow<List<weekly_planWithTypeNames>> = repository.weekly_planWithTypeNames
     suspend fun insertStreak(streak: streak) = repository.insertStreak(streak)
