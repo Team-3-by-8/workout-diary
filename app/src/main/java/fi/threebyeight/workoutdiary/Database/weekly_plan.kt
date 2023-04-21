@@ -8,7 +8,8 @@ data class weekly_plan(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val type_id: Int,
-    val duration: Int
+    val duration: Int = 0,
+    val times: Int = 0
 )
 
 data class weekly_planWithTypeNames(

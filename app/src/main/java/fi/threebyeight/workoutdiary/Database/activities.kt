@@ -11,7 +11,7 @@ data class activities(
     //in minutes
     val duration: Int,
     //type, refers to id of type
-    val type_id: Int,
+    var type_id: Int,
     val max_HR: Int?,
     val min_HR: Int?,
     val average_HR: Int?

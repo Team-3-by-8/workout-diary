@@ -1,6 +1,5 @@
 package fi.threebyeight.workoutdiary.viewmodel
 
-import android.widget.ListAdapter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,8 +9,6 @@ import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) :
@@ -26,12 +23,9 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
                     repository.insertType(event.type)
-                    val activityWithTypeId = event.activity
-//                    val name: String = _TypeState.collect(name)
-//
-//                    activityWithTypeId.type_id = repository.getTypeByName(_TypeState.value.name)
-//                    repository.insertActivities()
-
+                    var activityWithTypeId = event.activity
+                    activityWithTypeId.type_id = (repository.getTypeByName(event.type.name)).id!!
+                    repository.insertActivities(event.activity)
                 }
             }
             ActivityEvent.ShowDialog -> TODO()
@@ -47,14 +41,6 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
 
     val activities: Flow<List<activitiesWithTypeNames>> = repository.activities
     var type: List<type> = emptyList<type>()
-    val collecting={
-        viewModelScope.launch {
-            repository.types.collect() {
-               type = it
-                println(it)
-        }
-    }
-    }
 
     val typeState: List<type> = emptyList()
     val streak: Flow<List<streak>> = repository.streak
