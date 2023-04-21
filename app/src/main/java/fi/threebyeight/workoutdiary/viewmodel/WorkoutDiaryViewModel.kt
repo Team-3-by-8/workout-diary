@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.lang.reflect.Type
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) :
     ViewModel() {
@@ -25,8 +24,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
                     onTypeEvent(TypeEvent.SaveType(event.type)) //we insert the type
-                    ActivityEvent.setType_id(repository.getTypeByName(event.type.name).id!!)
-                    //assigning type_id to the activity state
+                    event.activity.type_id = repository.getTypeByName(event.type.name).id!!
                     repository.insertActivities(event.activity)
                 }
             }
