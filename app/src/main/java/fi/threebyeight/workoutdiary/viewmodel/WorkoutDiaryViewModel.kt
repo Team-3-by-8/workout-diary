@@ -9,6 +9,7 @@ import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) :
@@ -18,24 +19,72 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
     private val _activitieState = MutableStateFlow(ActivityState())
 
     fun onEvent(event: ActivityEvent) {
-        when(event){
-            ActivityEvent.HideDialog -> TODO()
+        when (event) {
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
-                    repository.insertType(event.type)
-                    var activityWithTypeId = event.activity
-                    activityWithTypeId.type_id = (repository.getTypeByName(event.type.name)).id!!
+                    repository.insertType(event.type) //we insert the type
+                    ActivityEvent.setType_id(repository.getTypeByName(event.type.name).id!!)
+                    //assigning type_id to the activity state
                     repository.insertActivities(event.activity)
                 }
             }
-            ActivityEvent.ShowDialog -> TODO()
+            ActivityEvent.HideDialog -> {
+                _activitieState.update {
+                    it.copy(
+                        showDialog = false
+                    )
+                }
+            }
+            ActivityEvent.ShowDialog -> {
+                _activitieState.update {
+                    it.copy(
+                        showDialog = true
+                    )
+                }
+            }
             ActivityEvent.deleteActivity -> TODO()
-            is ActivityEvent.setAverage_HR -> TODO()
-            is ActivityEvent.setDate -> TODO()
-            is ActivityEvent.setDuration -> TODO()
-            is ActivityEvent.setMax_HR -> TODO()
-            is ActivityEvent.setMin_HR -> TODO()
-            is ActivityEvent.setType_id -> TODO()
+            is ActivityEvent.setAverage_HR -> {
+                _activitieState.update {
+                    it.copy(
+                        average_HR = event.average_HR
+                    )
+                }
+            }
+            is ActivityEvent.setDate -> {
+                _activitieState.update {
+                    it.copy(
+                        date = event.date
+                    )
+                }
+            }
+            is ActivityEvent.setDuration -> {
+                _activitieState.update {
+                    it.copy(
+                        duration = event.duration
+                    )
+                }
+            }
+            is ActivityEvent.setMax_HR -> {
+                _activitieState.update {
+                    it.copy(
+                        max_HR = event.max_HR
+                    )
+                }
+            }
+            is ActivityEvent.setMin_HR -> {
+                _activitieState.update {
+                    it.copy(
+                        min_HR = event.min_HR
+                    )
+                }
+            }
+            is ActivityEvent.setType_id -> {
+                _activitieState.update {
+                    it.copy(
+                        type_id = event.type_id
+                    )
+                }
+            }
         }
     }
 
