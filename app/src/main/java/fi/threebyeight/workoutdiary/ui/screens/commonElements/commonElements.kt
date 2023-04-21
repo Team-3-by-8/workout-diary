@@ -95,8 +95,7 @@ fun CommonButton(
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = title,
@@ -117,7 +116,8 @@ fun CommonButton(
 fun SelectionButton(
     title: String,
     onClick: () -> Unit,
-    color: Color = MaterialTheme.colors.primary
+    color: Color = MaterialTheme.colors.primary,
+    width: Int = 925
 ) {
     Button(
         onClick = onClick,
@@ -128,7 +128,7 @@ fun SelectionButton(
         ),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
         modifier = Modifier
-            .fillMaxWidth()
+            .width(width.dp)
             .height(54.dp)
             .padding(bottom = 10.dp)
             .background(color)
@@ -136,8 +136,7 @@ fun SelectionButton(
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = title,

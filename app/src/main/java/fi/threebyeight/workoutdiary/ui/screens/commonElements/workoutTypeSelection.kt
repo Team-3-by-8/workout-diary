@@ -26,12 +26,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.WorkoutType
+import fi.threebyeight.workoutdiary.ui.screens.RecordingScreen
 import java.util.*
 
 @Composable
-fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
+fun SelectionMain(
+    types: List<WorkoutType>,
+    RecordNew: Boolean,
+    navController: NavController
+) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar[Calendar.YEAR]
@@ -40,6 +46,7 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     val currentDate = "$dayOfMonth/$month/$year"
 
     var chosenWorkout by remember { mutableStateOf("") }
+    var letsRecord by remember { mutableStateOf(false) }
     var dateInput by remember { mutableStateOf(currentDate) }
     var durationInput by remember { mutableStateOf("30") }
     var measurePulse by remember { mutableStateOf(false) }
@@ -62,7 +69,8 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { hideKeyboard = true }
+            .clickable { hideKeyboard = true },
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (chosenWorkout.isEmpty()) {
             ScreenSubTitle("Select Workout")
@@ -71,6 +79,8 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
                 types,
                 hideKeyboard,
                 setHideKeyboard = { hideKeyboard = it })
+        } else if (letsRecord) {
+            RecordingScreen(navController, chosenWorkout, currentDate)
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
             WorkoutChoiceConfirmation(
@@ -86,14 +96,15 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
                 setDurationInput = { durationInput = it },
                 datePicker,
                 hideKeyboard,
-                setHideKeyboard = { hideKeyboard = it }
+                setHideKeyboard = { hideKeyboard = it },
+                setLetsRecord = { letsRecord = it }
             )
         } else {
             WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
             Spacer(modifier = Modifier.weight(1f))
             SaveRecordConfirmation(
                 "Save the record?",
-                leftChoice = { /*TODO*/ },
+                leftChoice = { navController.navigate("Workout") },
                 rightChoice = { readyToSave = false }
             )
         }
@@ -134,7 +145,9 @@ fun WorkoutTypeSelection(
         items(types) { type ->
             SelectionButton(
                 title = type.name,
-                onClick = { setChosenWorkout(type.name) })
+                onClick = { setChosenWorkout(type.name) },
+                width = 9000
+            )
         }
     }
 }
@@ -252,9 +265,9 @@ fun WorkoutChoiceConfirmation(
     setDurationInput: (String) -> Unit,
     datePicker: DatePickerDialog,
     hideKeyboard: Boolean,
-    setHideKeyboard: (Boolean) -> Unit
+    setHideKeyboard: (Boolean) -> Unit,
+    setLetsRecord: (Boolean) -> Unit
 ) {
-
     Column(
         modifier = Modifier
             .padding(horizontal = 70.dp)
@@ -350,9 +363,16 @@ fun WorkoutChoiceConfirmation(
         Row {
             Spacer(modifier = Modifier.weight(1.5f))
             Box(modifier = Modifier.weight(1f)) {
-                SelectionButton(
-                    title = if (RecordNew) "Start" else "Save",
-                    onClick = { setReadyToSave(true) })
+                if (RecordNew) {
+                    SelectionButton(
+                        title = "Start",
+                        onClick = { setLetsRecord(true) }
+                    )
+                } else {
+                    SelectionButton(
+                        title = "Save",
+                        onClick = { setReadyToSave(true) })
+                }
             }
         }
     }
@@ -394,11 +414,14 @@ fun WorkoutRecord(workoutType: String, workoutDate: String, workoutDuration: Int
 fun SaveRecordConfirmation(
     theQuestion: String,
     leftChoice: () -> Unit,
-    rightChoice: () -> Unit
-) {
+    leftButtonText: String = "Yes",
+    leftButtonColor: Color = MaterialTheme.colors.primary,
+    rightChoice: () -> Unit,
+    rightButtonColor: Color = Color.LightGray,
+    rightButtonText: String = "No",
+    ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -410,21 +433,19 @@ fun SaveRecordConfirmation(
             modifier = commonModifier,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(modifier = Modifier.weight(1f)) {
-                SelectionButton(
-                    "Yes",
-                    leftChoice,
-                    MaterialTheme.colors.primary
-                )
-            }
+            SelectionButton(
+                leftButtonText,
+                leftChoice,
+                leftButtonColor,
+                width = 100
+            )
             Spacer(modifier = Modifier.weight(0.2f))
-            Box(modifier = Modifier.weight(1f)) {
-                SelectionButton(
-                    "No",
-                    rightChoice,
-                    Color.LightGray
-                )
-            }
+            SelectionButton(
+                rightButtonText,
+                rightChoice,
+                rightButtonColor,
+                width = 100
+            )
         }
     }
 }

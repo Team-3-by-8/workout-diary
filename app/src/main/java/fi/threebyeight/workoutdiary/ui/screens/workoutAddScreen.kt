@@ -20,7 +20,7 @@ fun WorkoutAddScreen(navController: NavController) {
                 .weight(1f)
                 .padding(bottom = 32.dp)
         ) {
-            SelectionMain(dummyWorkoutTypeList, RecordNew = false)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = false, navController)
         }
     }
 }
