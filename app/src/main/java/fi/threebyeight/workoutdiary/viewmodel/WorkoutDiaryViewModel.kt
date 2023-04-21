@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import fi.threebyeight.workoutdiary.Database.*
 import fi.threebyeight.workoutdiary.Events.ActivityEvent
+import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.lang.reflect.Type
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) :
     ViewModel() {
@@ -18,11 +20,11 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
 
     private val _activitieState = MutableStateFlow(ActivityState())
 
-    fun onEvent(event: ActivityEvent) {
+    fun onActivityEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
-                    repository.insertType(event.type) //we insert the type
+                    onTypeEvent(TypeEvent.SaveType(event.type)) //we insert the type
                     ActivityEvent.setType_id(repository.getTypeByName(event.type.name).id!!)
                     //assigning type_id to the activity state
                     repository.insertActivities(event.activity)
@@ -82,6 +84,48 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
                 _activitieState.update {
                     it.copy(
                         type_id = event.type_id
+                    )
+                }
+            }
+        }
+    }
+
+    fun onTypeEvent(event: TypeEvent) {
+        when (event) {
+            is TypeEvent.DeleteType -> TODO()
+            is TypeEvent.SaveType -> {
+                viewModelScope.launch {
+                    repository.insertType(event.type)
+                }
+            }
+            TypeEvent.ShowDialog -> {_TypeState.update{
+                it.copy(
+                    showDialog = true
+                )
+            }}
+            TypeEvent.HideDialog -> {_TypeState.update {
+                it.copy(
+                    showDialog = false
+                )
+            }}
+            is TypeEvent.setId -> {
+                _TypeState.update {
+                    it.copy(
+                        id = event.id
+                    )
+                }
+            }
+            is TypeEvent.setIsListed -> {
+                _TypeState.update {
+                    it.copy(
+                        isListed = event.isListed
+                    )
+                }
+            }
+            is TypeEvent.setName -> {
+                _TypeState.update {
+                    it.copy(
+                        name = event.name
                     )
                 }
             }
