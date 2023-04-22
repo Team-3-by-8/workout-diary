@@ -1,5 +1,6 @@
 package fi.threebyeight.workoutdiary.viewmodel
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import fi.threebyeight.workoutdiary.Events.ActivityEvent
 import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -19,22 +21,22 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
     private val _activities =
         repository.activities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _activitieState = MutableStateFlow(ActivityState())
-    val ActivityState = _activitieState.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        ActivityState()
+    val activityState = _activitieState.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ActivityState()
     )
     val typeState = _TypeState.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        TypeState()
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = TypeState()
     )
 
     fun onActivityEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
-                    onTypeEvent(TypeEvent.SaveType(event.type)) //we insert the type
+//                    onTypeEvent(TypeEvent.SaveType(event.type)) //we insert the type
                     event.activity.type_id = repository.getTypeByName(event.type.name).id!!
                     repository.insertActivities(event.activity)
                 }
