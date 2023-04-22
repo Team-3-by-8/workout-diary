@@ -1,6 +1,5 @@
 package fi.threebyeight.workoutdiary.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -9,7 +8,6 @@ import fi.threebyeight.workoutdiary.Events.ActivityEvent
 import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -20,8 +18,8 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
         repository.types.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _activities =
         repository.activities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    private val _activitieState = MutableStateFlow(ActivityState())
-    val activityState = _activitieState.stateIn(
+    private val _activityState = MutableStateFlow(ActivityState())
+    val activityState = _activityState.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ActivityState()
@@ -36,14 +34,29 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
         when (event) {
             is ActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
-//                    onTypeEvent(TypeEvent.SaveType(event.type)) //we insert the type
-                    event.activity.type_id = repository.getTypeByName(event.type.name).id!!
-                    repository.insertActivities(event.activity)
+                    onTypeEvent(TypeEvent.SaveType)
+                }
+                val date = activityState.value.date
+                val type_id = repository.getTypeByName(typeState.value.name).id!!
+                val duration = activityState.value.duration
+                val max_HR = activityState.value.max_HR
+                val min_HR = activityState.value.min_HR
+                val average_HR = activityState.value.average_HR
+                val activity = activities(
+                    date = date,
+                    type_id = type_id,
+                    duration = duration,
+                    max_HR = max_HR,
+                    min_HR = min_HR,
+                    average_HR = average_HR,
+                )
+                viewModelScope.launch {
+                    repository.insertActivities(activity)
                 }
             }
 
             ActivityEvent.HideDialog -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         showDialog = false
                     )
@@ -51,7 +64,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             ActivityEvent.ShowDialog -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         showDialog = true
                     )
@@ -60,7 +73,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
 
             ActivityEvent.deleteActivity -> TODO()
             is ActivityEvent.setAverage_HR -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         average_HR = event.average_HR
                     )
@@ -68,7 +81,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             is ActivityEvent.setDate -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         date = event.date
                     )
@@ -76,7 +89,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             is ActivityEvent.setDuration -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         duration = event.duration
                     )
@@ -84,7 +97,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             is ActivityEvent.setMax_HR -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         max_HR = event.max_HR
                     )
@@ -92,7 +105,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             is ActivityEvent.setMin_HR -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         min_HR = event.min_HR
                     )
@@ -100,7 +113,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
             }
 
             is ActivityEvent.setType_id -> {
-                _activitieState.update {
+                _activityState.update {
                     it.copy(
                         type_id = event.type_id
                     )
@@ -113,8 +126,15 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
         when (event) {
             is TypeEvent.DeleteType -> TODO()
             is TypeEvent.SaveType -> {
+                val name = typeState.value.name
+                if (name.isBlank()) {
+                    return
+                }
+                val type = type(
+                    name = name
+                )
                 viewModelScope.launch {
-                    repository.insertType(event.type)
+                    repository.insertType(type)
                 }
             }
 
@@ -160,22 +180,6 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
         }
     }
 
-    val activities: Flow<List<activitiesWithTypeNames>> = repository.activities
-    var type: List<type> = emptyList<type>()
-
-    val streak: Flow<List<streak>> = repository.streak
-    val weeklyPlan: Flow<List<weekly_planWithTypeNames>> = repository.weekly_planWithTypeNames
-    suspend fun insertStreak(streak: streak) = repository.insertStreak(streak)
-    suspend fun updateStreak(streak: streak) = repository.updateStreak(streak)
-    suspend fun insertWeekly_plan(weeklyPlan: weekly_plan) =
-        repository.insertWeekly_plan(weeklyPlan)
-
-    suspend fun deleteWeekly_plan(weeklyPlan: weekly_plan) =
-        repository.deleteWeekly_plan(weeklyPlan)
-
-    suspend fun deleteType(type: type) = repository.deleteType(type)
-    suspend fun insertType(type: type) = repository.insertType(type)
-    suspend fun updateType(type: type) = repository.updateType(type)
 
 
 }

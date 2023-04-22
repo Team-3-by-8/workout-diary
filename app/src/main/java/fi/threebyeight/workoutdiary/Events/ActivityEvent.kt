@@ -5,7 +5,7 @@ import fi.threebyeight.workoutdiary.Database.type
 import java.sql.Date
 
 sealed interface ActivityEvent {
-    data class SaveActivity(val activity:activities, val type: type) : ActivityEvent
+    object SaveActivity : ActivityEvent
     data class setDate(val date: Date) : ActivityEvent
     data class setDuration(val duration: Int) : ActivityEvent
     data class setType_id(val type_id: Int) : ActivityEvent
