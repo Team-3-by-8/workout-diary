@@ -11,8 +11,7 @@ import fi.threebyeight.workoutdiary.States.TypeState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class WorkoutDiaryViewModel(private val repository: database_Repository) :
-    ViewModel() {
+class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewModel() {
     private val _TypeState = MutableStateFlow(TypeState())
     private val _types =
         repository.types.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -180,18 +179,5 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) :
         }
     }
 
-
-
-}
-
-class WorkoutDiaryViewModelFactory(private val databaseRepository: database_Repository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WorkoutDiaryViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return WorkoutDiaryViewModel(databaseRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 
 }
