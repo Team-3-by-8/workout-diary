@@ -10,6 +10,7 @@ import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.sql.Date
 
 class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewModel() {
     private val _TypeState = MutableStateFlow(TypeState())
@@ -32,9 +33,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
     fun onActivityEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.SaveActivity -> {
-                viewModelScope.launch {
-                    onTypeEvent(TypeEvent.SaveType)
-                }
+                onTypeEvent(TypeEvent.SaveType)
                 val date = activityState.value.date
                 val type_id = repository.getTypeByName(typeState.value.name).id!!
                 val duration = activityState.value.duration
@@ -49,6 +48,9 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
                     min_HR = min_HR,
                     average_HR = average_HR,
                 )
+                if(date == Date(0,0,0) || type_id == 0 || duration == 0){
+                    return
+                }
                 viewModelScope.launch {
                     repository.insertActivities(activity)
                 }
