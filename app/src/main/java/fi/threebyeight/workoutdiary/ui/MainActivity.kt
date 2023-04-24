@@ -1,9 +1,11 @@
 package fi.threebyeight.workoutdiary.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,16 +20,51 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import fi.threebyeight.workoutdiary.Database.database_Repository
+import fi.threebyeight.workoutdiary.Database.workout_diary_db
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.ui.theme.WorkoutDiaryTheme
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            workout_diary_db::class.java,
+            "workout_diary.db"
+        ).build()
+    }
+
+    private val viewModel by viewModels<WorkoutDiaryViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return WorkoutDiaryViewModel(
+                        database_Repository(
+                            db.streakDao,
+                            db.activitiesDao,
+                            db.typesDao,
+                            db.planDao
+                        )
+                    ) as T
+                }
+            }
+        }
+    )
+
+    @SuppressLint("StateFlowValueCalledInComposition")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WorkoutDiaryTheme {
+                val typeState by viewModel.typeState.collectAsState()
+                val activityState by viewModel.activityState.collectAsState()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
