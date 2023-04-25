@@ -26,12 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fi.threebyeight.workoutdiary.Database.type
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.WorkoutType
 import java.util.*
 
 @Composable
-fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
+fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeState) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar[Calendar.YEAR]
@@ -68,9 +70,9 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
             ScreenSubTitle("Select Workout")
             WorkoutTypeSelection(
                 setChosenWorkout = { chosenWorkout = it },
-                types,
-                hideKeyboard,
-                setHideKeyboard = { hideKeyboard = it })
+                typeState.types,
+                hideKeyboard
+            ) { hideKeyboard = it }
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
             WorkoutChoiceConfirmation(
@@ -103,7 +105,7 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean) {
 @Composable
 fun WorkoutTypeSelection(
     setChosenWorkout: (String) -> Unit,
-    types: List<WorkoutType>,
+    types: List<type>,
     hideKeyboard: Boolean,
     setHideKeyboard: (Boolean) -> Unit
 ) {

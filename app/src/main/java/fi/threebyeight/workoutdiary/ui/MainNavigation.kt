@@ -52,11 +52,11 @@ fun AppNavController(
             setShowBottomBar(true)
         }
         composable(route = "WorkoutNew") {
-            WorkoutNewScreen(navController)
+            WorkoutNewScreen(navController, typeState)
             setShowBottomBar(false)
         }
         composable(route = "WorkoutAdd") {
-            WorkoutAddScreen(navController)
+            WorkoutAddScreen(navController, typeState)
             setShowBottomBar(false)
         }
     }

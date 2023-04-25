@@ -10,7 +10,7 @@ data class type(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val name: String,
-    val isListed: Boolean = true
+    val isListed: Boolean? = true
 )
 
 @Dao
