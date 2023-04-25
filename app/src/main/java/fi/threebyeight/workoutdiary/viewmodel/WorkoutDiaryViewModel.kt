@@ -1,7 +1,6 @@
 package fi.threebyeight.workoutdiary.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import fi.threebyeight.workoutdiary.Database.*
 import fi.threebyeight.workoutdiary.Events.ActivityEvent
@@ -19,12 +18,21 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
     private val _activities =
         repository.activities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _activityState = MutableStateFlow(ActivityState())
-    val activityState = _activityState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ActivityState()
-    )
-    val typeState = _TypeState.stateIn(
+    val activityState = combine(_activityState, _activities) { activityState, activities ->
+        activityState.copy(
+            activities = activities,
+        )
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ActivityState()
+        )
+    val typeState = combine(_TypeState, _types) { typeState, types ->
+        typeState.copy(
+            types = types,
+        )
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = TypeState()
@@ -48,7 +56,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
                     min_HR = min_HR,
                     average_HR = average_HR,
                 )
-                if(date == Date(0,0,0) || type_id == 0 || duration == 0){
+                if (date == Date(0, 0, 0) || type_id == 0 || duration == 0) {
                     return
                 }
                 viewModelScope.launch {
