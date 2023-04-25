@@ -27,6 +27,8 @@ import androidx.room.Room
 import fi.threebyeight.workoutdiary.Database.database_Repository
 import fi.threebyeight.workoutdiary.Database.workout_diary_db
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.ActivityState
+import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.ui.theme.WorkoutDiaryTheme
 import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BasicLayout()
+                    BasicLayout(typeState, activityState, viewModel)
                 }
             }
         }
@@ -78,7 +80,7 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BasicLayout() {
+fun BasicLayout(typeState: TypeState, activityState: ActivityState, viewModel: ViewModel) {
     val navController = rememberNavController()
     val items = listOf(
         TabItem(ImageVector.vectorResource(id = R.drawable.workout), "Workout"),
@@ -110,7 +112,11 @@ fun BasicLayout() {
             ) {
                 AppNavController(
                     navController = navController,
-                    setShowBottomBar = { showBottomBar = it })
+                    setShowBottomBar = { showBottomBar = it },
+                    typeState,
+                    activityState,
+                    viewModel
+                )
             }
         },
         bottomBar = {
@@ -121,13 +127,4 @@ fun BasicLayout() {
             }
         }
     )
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WorkoutDiaryTheme {
-        BasicLayout()
-    }
 }
