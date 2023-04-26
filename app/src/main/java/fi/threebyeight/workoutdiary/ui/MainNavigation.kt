@@ -11,11 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.ActivityState
+import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.ui.screens.*
 import fi.threebyeight.workoutdiary.ui.theme.LightGrey
 
@@ -23,7 +26,10 @@ import fi.threebyeight.workoutdiary.ui.theme.LightGrey
 @Composable
 fun AppNavController(
     navController: NavHostController,
-    setShowBottomBar: (Boolean) -> Unit
+    setShowBottomBar: (Boolean) -> Unit,
+    typeState: TypeState,
+    activityState: ActivityState,
+    viewModel: ViewModel
 ) {
     NavHost(
         navController = navController,
@@ -46,11 +52,11 @@ fun AppNavController(
             setShowBottomBar(true)
         }
         composable(route = "WorkoutNew") {
-            WorkoutNewScreen(navController)
+            WorkoutNewScreen(navController, typeState)
             setShowBottomBar(false)
         }
         composable(route = "WorkoutAdd") {
-            WorkoutAddScreen(navController)
+            WorkoutAddScreen(navController, typeState)
             setShowBottomBar(false)
         }
     }

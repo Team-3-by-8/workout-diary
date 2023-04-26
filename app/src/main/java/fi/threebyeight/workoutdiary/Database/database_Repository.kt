@@ -11,15 +11,18 @@ class database_Repository(
 ) {
 
     // Room executes all queries on a separate thread.
-    val streak: List<streak> = streakDao.getStreak()
-    val activities: List<activitiesWithTypeNames> = activitiesDao.getActivities()
+    val streak: Flow<List<streak>> = streakDao.getStreak()
+    val activities: Flow<List<activitiesWithTypeNames>> = activitiesDao.getActivities()
 
-    val types: List<types> = typesDao.getTypes()
-    val weekly_planWithTypeNames: List<weekly_planWithTypeNames> =
+    val types: Flow<List<type>> = typesDao.getType()
+    val weekly_planWithTypeNames: Flow<List<weekly_planWithTypeNames>> =
         weekly_planDao.getWeekly_planWithTypeName()
 
+    fun getTypeByName(name: String): type{
+        return typesDao.getTypeByName(name)
+    }
 
-    // We can try using it just using Dao, ignoring the Repository
+
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insertStreak(streak: streak) {
@@ -42,16 +45,18 @@ class database_Repository(
         weekly_planDao.deleteWeekly_plan(weekly_plan = weekly_plan)
     }
 
-    suspend fun deleteType(types: types) {
-        typesDao.deleteType(types)
+    suspend fun deleteType(type: type) {
+        typesDao.deleteType(type)
     }
 
-    suspend fun insertType(types: types) {
-        typesDao.insertType(types)
+    suspend fun insertType(type: type) {
+        typesDao.insertType(type)
     }
 
-    suspend fun updateType(types: types) {
-        typesDao.updateType(types)
+    suspend fun updateType(type: type) {
+        typesDao.updateType(type)
     }
+
+
 
 }

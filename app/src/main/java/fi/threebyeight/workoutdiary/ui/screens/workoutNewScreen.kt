@@ -7,12 +7,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.dummyWorkoutTypeList
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionMain
 
 @Composable
-fun WorkoutNewScreen(navController: NavController) {
+fun WorkoutNewScreen(navController: NavController, typeState: TypeState) {
     Column {
         ScreenTitle(stringResource(R.string.titleStartNow), navController, "Workout")
         Box(
@@ -20,7 +21,7 @@ fun WorkoutNewScreen(navController: NavController) {
                 .weight(1f)
                 .padding(bottom = 32.dp)
         ) {
-            SelectionMain(dummyWorkoutTypeList, RecordNew = true)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = true, typeState = typeState)
         }
     }
 }

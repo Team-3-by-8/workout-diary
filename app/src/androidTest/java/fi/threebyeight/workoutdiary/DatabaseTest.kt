@@ -3,8 +3,7 @@ package fi.threebyeight.workoutdiary
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import fi.threebyeight.workoutdiary.Database.database_Repository
-import fi.threebyeight.workoutdiary.Database.types
+import fi.threebyeight.workoutdiary.Database.type
 import fi.threebyeight.workoutdiary.Database.typesDao
 import fi.threebyeight.workoutdiary.Database.workout_diary_db
 import kotlinx.coroutines.runBlocking
@@ -47,7 +46,7 @@ class DatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetTypes() = runBlocking {
-        val types = types(name = "test name", isListed = true, id = 1)
+        val types = type(name = "test name", isListed = true, id = 1)
         typesDao.insertType(types)
         var value = typesDao.getTypes()
         assertEquals(value[0]?.id, 1)
