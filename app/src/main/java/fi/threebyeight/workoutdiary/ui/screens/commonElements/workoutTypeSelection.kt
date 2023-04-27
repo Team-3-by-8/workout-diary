@@ -27,13 +27,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.Database.type
+import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.WorkoutType
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 import java.util.*
 
 @Composable
-fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeState) {
+fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeState, viewModel: WorkoutDiaryViewModel) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar[Calendar.YEAR]
@@ -71,7 +73,9 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeS
             WorkoutTypeSelection(
                 setChosenWorkout = { chosenWorkout = it },
                 typeState.types,
-                hideKeyboard
+                hideKeyboard,
+                viewModel,
+                typeState
             ) { hideKeyboard = it }
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
@@ -107,10 +111,10 @@ fun WorkoutTypeSelection(
     setChosenWorkout: (String) -> Unit,
     types: List<type>,
     hideKeyboard: Boolean,
-    setHideKeyboard: (Boolean) -> Unit
+    viewModel: WorkoutDiaryViewModel,
+    typeState: TypeState,
+    setHideKeyboard: (Boolean) -> Unit,
 ) {
-    var workoutNameInput by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .padding(horizontal = 70.dp)
@@ -119,12 +123,13 @@ fun WorkoutTypeSelection(
     ) {
         AddNewWorkout(
             setChosenWorkout,
-            workoutNameInput,
+            typeState.name,
             onValueChange = {
-                workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
+                viewModel.onTypeEvent(TypeEvent.setName(it.lowercase().replaceFirstChar(Char::titlecase)))
             },
             hideKeyboard = hideKeyboard,
-            onFocusClear = { setHideKeyboard(false) }
+            onFocusClear = { setHideKeyboard(false) },
+            viewModel = viewModel
         )
     }
     LazyColumn(
@@ -148,6 +153,7 @@ fun AddNewWorkout(
     onValueChange: (String) -> Unit,
     hideKeyboard: Boolean = false,
     onFocusClear: () -> Unit = {},
+    viewModel: WorkoutDiaryViewModel
 ) {
     val focusManager = LocalFocusManager.current
     val submitButton = @Composable {

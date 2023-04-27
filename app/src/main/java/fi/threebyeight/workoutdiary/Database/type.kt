@@ -17,7 +17,7 @@ data class type(
 public interface typesDao {
 
     //Here comes the dirty stuff, replace
-    @Insert(entity = type::class, onConflict = OnConflictStrategy.REPLACE)
+    @Insert(entity = type::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertType(type: type)
 
     @Update

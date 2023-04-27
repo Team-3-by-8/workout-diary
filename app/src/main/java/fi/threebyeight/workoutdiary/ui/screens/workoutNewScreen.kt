@@ -11,9 +11,10 @@ import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.dummyWorkoutTypeList
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionMain
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
 @Composable
-fun WorkoutNewScreen(navController: NavController, typeState: TypeState) {
+fun WorkoutNewScreen(navController: NavController, typeState: TypeState, viewModel: WorkoutDiaryViewModel) {
     Column {
         ScreenTitle(stringResource(R.string.titleStartNow), navController, "Workout")
         Box(
@@ -21,7 +22,7 @@ fun WorkoutNewScreen(navController: NavController, typeState: TypeState) {
                 .weight(1f)
                 .padding(bottom = 32.dp)
         ) {
-            SelectionMain(dummyWorkoutTypeList, RecordNew = true, typeState = typeState)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = true, typeState = typeState, viewModel = viewModel)
         }
     }
 }

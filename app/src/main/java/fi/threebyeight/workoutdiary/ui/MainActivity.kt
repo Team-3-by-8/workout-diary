@@ -80,7 +80,11 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BasicLayout(typeState: TypeState, activityState: ActivityState, viewModel: ViewModel) {
+fun BasicLayout(
+    typeState: TypeState,
+    activityState: ActivityState,
+    viewModel: WorkoutDiaryViewModel
+) {
     val navController = rememberNavController()
     val items = listOf(
         TabItem(ImageVector.vectorResource(id = R.drawable.workout), "Workout"),

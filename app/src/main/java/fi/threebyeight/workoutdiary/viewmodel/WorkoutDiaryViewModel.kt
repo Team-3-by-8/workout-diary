@@ -145,6 +145,7 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
                 viewModelScope.launch {
                     repository.insertType(type)
                 }
+                TypeEvent.setName("")
             }
 
             TypeEvent.ShowDialog -> {
