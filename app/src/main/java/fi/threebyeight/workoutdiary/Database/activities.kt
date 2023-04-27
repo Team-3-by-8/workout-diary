@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 data class activities(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val date: java.sql.Date,
+    //val date: java.sql.Date,
+    val date: String,
+    //temporary solution, will be String instead of Date
     //in minutes
     val duration: Int,
     //type, refers to id of type

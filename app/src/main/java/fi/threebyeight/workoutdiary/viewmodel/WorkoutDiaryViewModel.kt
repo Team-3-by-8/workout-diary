@@ -49,14 +49,14 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
                 val min_HR = activityState.value.min_HR
                 val average_HR = activityState.value.average_HR
                 val activity = activities(
-                    date = date,
+                    date = date!!,
                     type_id = type_id,
                     duration = duration,
                     max_HR = max_HR,
                     min_HR = min_HR,
                     average_HR = average_HR,
                 )
-                if (date == Date(0, 0, 0) || type_id == 0 || duration == 0) {
+                if (date.isNullOrBlank() || type_id == 0 || duration == 0) {
                     return
                 }
                 viewModelScope.launch {

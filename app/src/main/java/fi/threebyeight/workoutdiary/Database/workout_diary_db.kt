@@ -8,7 +8,6 @@ import androidx.room.*
     entities = [type::class, weekly_plan::class, activities::class, streak::class],
     exportSchema = false
 )
-@TypeConverters(Converters::class)
 abstract class workout_diary_db : RoomDatabase() {
 
     abstract val typesDao: typesDao

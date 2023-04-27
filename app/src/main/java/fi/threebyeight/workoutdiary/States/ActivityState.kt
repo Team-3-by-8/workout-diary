@@ -6,7 +6,7 @@ import java.sql.Date
 
 data class ActivityState(
     val activities: List<activitiesWithTypeNames> = emptyList(),
-    val date: Date = Date(0,0,0), //maybe needs to be String, I am not sure what's best way for UI
+    val date: String? = null, //maybe needs to be String, I am not sure what's best way for UI
     val type_id: Int = 0, // also not sure about these
     val duration: Int = 0,
     val max_HR: Int? = null,
