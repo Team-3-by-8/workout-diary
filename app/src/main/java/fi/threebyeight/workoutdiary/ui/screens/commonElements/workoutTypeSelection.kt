@@ -127,7 +127,7 @@ fun SelectionMain(
                 setHideKeyboard = { hideKeyboard = it }
             )
         } else {
-            WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
+            WorkoutRecord(typeState.name, activityState.date!!, activityState.duration)
             Spacer(modifier = Modifier.weight(1f))
             SaveRecordConfirmation(
                 "Save the record?",
