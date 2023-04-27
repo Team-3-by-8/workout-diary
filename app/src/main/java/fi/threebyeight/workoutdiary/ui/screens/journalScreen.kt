@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fi.threebyeight.workoutdiary.Database.activitiesWithTypeNames
 import fi.threebyeight.workoutdiary.R
 import fi.threebyeight.workoutdiary.model.DummyRecord
 import fi.threebyeight.workoutdiary.model.dummyData
@@ -19,15 +20,15 @@ import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JournalScreen() {
+fun JournalScreen(data: List<activitiesWithTypeNames>) {
     Column {
         ScreenTitle(stringResource(R.string.titleJournal))
-        JournalList(dummyData)
+        JournalList(data)
     }
 }
 
 @Composable
-fun JournalList(records: List<DummyRecord>) {
+fun JournalList(records: List<activitiesWithTypeNames>) {
     LazyColumn(
         modifier = Modifier.padding(8.dp)
     ) {
@@ -37,15 +38,15 @@ fun JournalList(records: List<DummyRecord>) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = record.date.toString(),
+                    text = record.activities.date.toString(),
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
                 Text(
-                    text = record.workout,
+                    text = record.type.name,
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
                 Text(
-                    text = record.minutes.toString() + " min",
+                    text = record.activities.duration.toString() + " min",
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
             }

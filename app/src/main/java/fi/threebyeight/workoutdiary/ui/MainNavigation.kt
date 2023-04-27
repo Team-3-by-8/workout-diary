@@ -41,7 +41,7 @@ fun AppNavController(
             setShowBottomBar(true)
         }
         composable(route = "Journal") {
-            JournalScreen()
+            JournalScreen(activityState.activities)
             setShowBottomBar(true)
         }
         composable(route = "Plan") {
