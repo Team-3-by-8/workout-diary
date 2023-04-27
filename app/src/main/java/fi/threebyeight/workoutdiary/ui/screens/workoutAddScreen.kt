@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.dummyWorkoutTypeList
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
@@ -15,7 +16,7 @@ import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionMain
 import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
 @Composable
-fun WorkoutAddScreen(navController: NavController, typeState: TypeState,viewModel: WorkoutDiaryViewModel) {
+fun WorkoutAddScreen(navController: NavController, typeState: TypeState,activityState: ActivityState, viewModel: WorkoutDiaryViewModel) {
     Column {
         ScreenTitle(stringResource(R.string.titleAddPrevious), navController, "Workout")
         Box(
@@ -23,7 +24,7 @@ fun WorkoutAddScreen(navController: NavController, typeState: TypeState,viewMode
                 .weight(1f)
                 .padding(bottom = 32.dp)
         ) {
-            SelectionMain(dummyWorkoutTypeList, RecordNew = false, typeState, viewModel = viewModel)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = false, typeState, activityState, viewModel = viewModel)
         }
     }
 }

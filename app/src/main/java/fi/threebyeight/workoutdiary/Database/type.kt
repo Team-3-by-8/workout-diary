@@ -33,6 +33,6 @@ public interface typesDao {
     @Query("SELECT * FROM Type WHERE id = :id LIMIT 1")
     fun getTypeById(id: Int): Flow<type>
 
-    @Query("SELECT * FROM Type where name = :name LIMIT 1")
-    fun getTypeByName(name: String): type
+    @Query("SELECT * FROM Type where name = :name")
+    fun getTypeByName(name: String): List<type>
 }

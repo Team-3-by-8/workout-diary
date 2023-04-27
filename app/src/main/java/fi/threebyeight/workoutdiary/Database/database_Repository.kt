@@ -18,7 +18,7 @@ class database_Repository(
     val weekly_planWithTypeNames: Flow<List<weekly_planWithTypeNames>> =
         weekly_planDao.getWeekly_planWithTypeName()
 
-    fun getTypeByName(name: String): type{
+    fun getTypeByName(name: String): List<type>{
         return typesDao.getTypeByName(name)
     }
 
