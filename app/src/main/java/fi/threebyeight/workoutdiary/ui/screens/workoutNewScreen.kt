@@ -23,7 +23,7 @@ fun WorkoutNewScreen(navController: NavController, typeState: TypeState, activit
                 .weight(1f)
                 .padding(bottom = 32.dp)
         ) {
-            SelectionMain(dummyWorkoutTypeList, RecordNew = true, typeState = typeState, activityState, viewModel = viewModel)
+            SelectionMain(dummyWorkoutTypeList, RecordNew = true, navController, typeState = typeState, activityState, viewModel = viewModel)
         }
     }
 }

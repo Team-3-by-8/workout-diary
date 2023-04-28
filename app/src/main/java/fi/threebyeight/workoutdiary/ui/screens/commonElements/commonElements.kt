@@ -66,58 +66,12 @@ fun ScreenSubTitle(title: String) {
 }
 
 @Composable
-fun CommonButton(
-    title: String,
-    navController: NavController? = null,
-    route: String? = null,
-    color: Color = MaterialTheme.colors.primary
-) {
-    Button(
-        onClick = {
-            if (navController != null && route != null) {
-                navController.navigate(route)
-            } else {
-                /*TODO*/
-            }
-        },
-        elevation = ButtonDefaults.elevation(
-            defaultElevation = 10.dp,
-            pressedElevation = 5.dp,
-            disabledElevation = 0.dp,
-        ),
-        colors = ButtonDefaults.buttonColors(backgroundColor = color),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(54.dp)
-            .padding(bottom = 10.dp)
-            .background(color)
-            .shadow(elevation = 5.dp, ambientColor = Color.Black, spotColor = Color.Black),
-        contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.button,
-                modifier = Modifier.align(Alignment.Center)
-            )
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .background(White, RightArrowShape)
-                    .align(Alignment.CenterEnd)
-            )
-        }
-    }
-}
-
-@Composable
 fun SelectionButton(
     title: String,
     onClick: () -> Unit,
-    color: Color = MaterialTheme.colors.primary
+    color: Color = MaterialTheme.colors.primary,
+    width: Int = 925,
+    arrow: Boolean = false
 ) {
     Button(
         onClick = onClick,
@@ -128,7 +82,7 @@ fun SelectionButton(
         ),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
         modifier = Modifier
-            .fillMaxWidth()
+            .width(width.dp)
             .height(54.dp)
             .padding(bottom = 10.dp)
             .background(color)
@@ -136,14 +90,21 @@ fun SelectionButton(
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 13.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.button,
                 modifier = Modifier.align(Alignment.Center)
             )
+            if (arrow) {
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .background(White, RightArrowShape)
+                        .align(Alignment.CenterEnd)
+                )
+            }
         }
     }
 }

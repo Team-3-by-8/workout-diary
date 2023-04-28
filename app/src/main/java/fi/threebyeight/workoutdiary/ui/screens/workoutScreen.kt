@@ -21,9 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.R
-import fi.threebyeight.workoutdiary.ui.screens.commonElements.CommonButton
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.PlanSummaryTable
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
+import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionButton
 import fi.threebyeight.workoutdiary.ui.theme.OrangeBrown900
 import fi.threebyeight.workoutdiary.ui.theme.Righteous
 import fi.threebyeight.workoutdiary.ui.theme.StreakYellow
@@ -38,15 +38,15 @@ fun WorkoutScreen(navController: NavController) {
                 .padding(top = 17.dp)
                 .fillMaxWidth()
         ) {
-            CommonButton(
-                stringResource(R.string.titleStartNow),
-                navController,
-                "WorkoutNew"
+            SelectionButton(
+                title = stringResource(R.string.titleStartNow),
+                onClick = { navController.navigate("WorkoutNew") },
+                arrow = true
             )
-            CommonButton(
-                stringResource(R.string.titleAddPrevious),
-                navController,
-                "WorkoutAdd"
+            SelectionButton(
+                title = stringResource(R.string.titleAddPrevious),
+                onClick = { navController.navigate("WorkoutAdd") },
+                arrow = true
             )
         }
         Divider(color = Color.Transparent, thickness = 10.dp)
