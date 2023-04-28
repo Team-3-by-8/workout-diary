@@ -6,7 +6,7 @@ import java.sql.Date
 
 sealed interface ActivityEvent {
     object SaveActivity : ActivityEvent
-    data class setDate(val date: Date) : ActivityEvent
+    data class setDate(val date: String) : ActivityEvent
     data class setDuration(val duration: Int) : ActivityEvent
     data class setType_id(val type_id: Int) : ActivityEvent
     data class setMax_HR(val max_HR: Int) : ActivityEvent

@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             workout_diary_db::class.java,
             "workout_diary.db"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
     private val viewModel by viewModels<WorkoutDiaryViewModel>(
@@ -80,7 +80,11 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BasicLayout(typeState: TypeState, activityState: ActivityState, viewModel: ViewModel) {
+fun BasicLayout(
+    typeState: TypeState,
+    activityState: ActivityState,
+    viewModel: WorkoutDiaryViewModel
+) {
     val navController = rememberNavController()
     val items = listOf(
         TabItem(ImageVector.vectorResource(id = R.drawable.workout), "Workout"),

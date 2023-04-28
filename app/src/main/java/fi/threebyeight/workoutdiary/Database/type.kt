@@ -17,7 +17,7 @@ data class type(
 public interface typesDao {
 
     //Here comes the dirty stuff, replace
-    @Insert(entity = type::class, onConflict = OnConflictStrategy.REPLACE)
+    @Insert(entity = type::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertType(type: type)
 
     @Update
@@ -33,6 +33,6 @@ public interface typesDao {
     @Query("SELECT * FROM Type WHERE id = :id LIMIT 1")
     fun getTypeById(id: Int): Flow<type>
 
-    @Query("SELECT * FROM Type where name = :name LIMIT 1")
-    fun getTypeByName(name: String): type
+    @Query("SELECT * FROM Type where name = :name")
+    fun getTypeByName(name: String): List<type>
 }

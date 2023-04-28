@@ -41,22 +41,25 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
     fun onActivityEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.SaveActivity -> {
-                onTypeEvent(TypeEvent.SaveType)
+                viewModelScope.launch {
+                    onTypeEvent(TypeEvent.SaveType)
+                }
+                Thread.sleep(1_000)
                 val date = activityState.value.date
-                val type_id = repository.getTypeByName(typeState.value.name).id!!
+                val type_id = repository.getTypeByName(typeState.value.name)[0].id!!
                 val duration = activityState.value.duration
                 val max_HR = activityState.value.max_HR
                 val min_HR = activityState.value.min_HR
                 val average_HR = activityState.value.average_HR
                 val activity = activities(
-                    date = date,
+                    date = date!!,
                     type_id = type_id,
                     duration = duration,
                     max_HR = max_HR,
                     min_HR = min_HR,
                     average_HR = average_HR,
                 )
-                if (date == Date(0, 0, 0) || type_id == 0 || duration == 0) {
+                if (date.isNullOrBlank() || type_id == 0 || duration == 0) {
                     return
                 }
                 viewModelScope.launch {

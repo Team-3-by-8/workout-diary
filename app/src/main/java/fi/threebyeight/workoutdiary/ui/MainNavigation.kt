@@ -21,6 +21,7 @@ import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.ui.screens.*
 import fi.threebyeight.workoutdiary.ui.theme.LightGrey
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -29,7 +30,7 @@ fun AppNavController(
     setShowBottomBar: (Boolean) -> Unit,
     typeState: TypeState,
     activityState: ActivityState,
-    viewModel: ViewModel
+    viewModel: WorkoutDiaryViewModel
 ) {
     NavHost(
         navController = navController,
@@ -40,7 +41,7 @@ fun AppNavController(
             setShowBottomBar(true)
         }
         composable(route = "Journal") {
-            JournalScreen()
+            JournalScreen(activityState.activities)
             setShowBottomBar(true)
         }
         composable(route = "Plan") {
@@ -52,11 +53,11 @@ fun AppNavController(
             setShowBottomBar(true)
         }
         composable(route = "WorkoutNew") {
-            WorkoutNewScreen(navController, typeState)
+            WorkoutNewScreen(navController, typeState, activityState, viewModel)
             setShowBottomBar(false)
         }
         composable(route = "WorkoutAdd") {
-            WorkoutAddScreen(navController, typeState)
+            WorkoutAddScreen(navController, typeState, activityState, viewModel)
             setShowBottomBar(false)
         }
     }

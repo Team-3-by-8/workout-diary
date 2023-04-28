@@ -27,22 +27,40 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.Database.type
+import fi.threebyeight.workoutdiary.Events.ActivityEvent
+import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.R
+import fi.threebyeight.workoutdiary.States.ActivityState
 import fi.threebyeight.workoutdiary.States.TypeState
 import fi.threebyeight.workoutdiary.model.WorkoutType
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 import java.util.*
 
+fun currentDate(): String {
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH] + 1
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+    return "$dayOfMonth/$month/$year"
+}
+
 @Composable
-fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeState) {
+fun SelectionMain(
+    types: List<WorkoutType>,
+    RecordNew: Boolean,
+    typeState: TypeState,
+    activityState: ActivityState,
+    viewModel: WorkoutDiaryViewModel
+) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar[Calendar.YEAR]
     val month = calendar[Calendar.MONTH] + 1
     val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-    val currentDate = "$dayOfMonth/$month/$year"
+
 
     var chosenWorkout by remember { mutableStateOf("") }
-    var dateInput by remember { mutableStateOf(currentDate) }
+    var dateInput by remember { mutableStateOf(currentDate()) }
     var durationInput by remember { mutableStateOf("30") }
     var measurePulse by remember { mutableStateOf(false) }
     var readyToSave by remember { mutableStateOf(false) }
@@ -52,7 +70,7 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeS
     val datePicker = DatePickerDialog(
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            dateInput = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+            viewModel.onActivityEvent(ActivityEvent.setDate("$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"))
         }, year, month, dayOfMonth
     )
     val maxDaysPast = 14
@@ -69,34 +87,52 @@ fun SelectionMain(types: List<WorkoutType>, RecordNew: Boolean, typeState: TypeS
         if (chosenWorkout.isEmpty()) {
             ScreenSubTitle("Select Workout")
             WorkoutTypeSelection(
-                setChosenWorkout = { chosenWorkout = it },
+                setChosenWorkout = {
+                    chosenWorkout = it
+                    viewModel.onTypeEvent(TypeEvent.setName(it))
+                },
                 typeState.types,
-                hideKeyboard
+                hideKeyboard,
+                viewModel,
+                typeState
             ) { hideKeyboard = it }
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
             WorkoutChoiceConfirmation(
-                chosenWorkout,
-                setChosenWorkout = { chosenWorkout = it },
+                typeState.name,
+                setChosenWorkout = {
+                    chosenWorkout = it
+                    viewModel.onTypeEvent(TypeEvent.setName(it))
+                },
                 RecordNew,
                 setReadyToSave = { readyToSave = it },
                 measurePulse,
                 setMeasurePulse = { measurePulse = it },
-                dateInput,
-                setDateInput = { dateInput = it },
+                activityState.date!!,
+                setDateInput = { viewModel.onActivityEvent(ActivityEvent.setDate(it)) },
                 durationInput,
-                setDurationInput = { durationInput = it },
+                setDurationInput = {
+                    if (it.isNotBlank()) {
+                        viewModel.onActivityEvent(
+                            ActivityEvent.setDuration(
+                                it.toInt()
+                            )
+                        )
+                    }
+                },
                 datePicker,
                 hideKeyboard,
+                viewModel,
+                activityState,
                 setHideKeyboard = { hideKeyboard = it }
             )
         } else {
-            WorkoutRecord(chosenWorkout, workoutDate, workoutDuration)
+            WorkoutRecord(typeState.name, activityState.date!!, activityState.duration)
             Spacer(modifier = Modifier.weight(1f))
             SaveRecordConfirmation(
                 "Save the record?",
                 leftChoice = { /*TODO*/ },
-                rightChoice = { readyToSave = false }
+                rightChoice = { viewModel.onActivityEvent(ActivityEvent.SaveActivity) }
             )
         }
     }
@@ -107,10 +143,10 @@ fun WorkoutTypeSelection(
     setChosenWorkout: (String) -> Unit,
     types: List<type>,
     hideKeyboard: Boolean,
-    setHideKeyboard: (Boolean) -> Unit
+    viewModel: WorkoutDiaryViewModel,
+    typeState: TypeState,
+    setHideKeyboard: (Boolean) -> Unit,
 ) {
-    var workoutNameInput by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .padding(horizontal = 70.dp)
@@ -119,12 +155,17 @@ fun WorkoutTypeSelection(
     ) {
         AddNewWorkout(
             setChosenWorkout,
-            workoutNameInput,
+            typeState.name,
             onValueChange = {
-                workoutNameInput = it.lowercase().replaceFirstChar(Char::titlecase)
+                viewModel.onTypeEvent(
+                    TypeEvent.setName(
+                        it.lowercase().replaceFirstChar(Char::titlecase)
+                    )
+                )
             },
             hideKeyboard = hideKeyboard,
-            onFocusClear = { setHideKeyboard(false) }
+            onFocusClear = { setHideKeyboard(false) },
+            viewModel = viewModel
         )
     }
     LazyColumn(
@@ -148,6 +189,7 @@ fun AddNewWorkout(
     onValueChange: (String) -> Unit,
     hideKeyboard: Boolean = false,
     onFocusClear: () -> Unit = {},
+    viewModel: WorkoutDiaryViewModel
 ) {
     val focusManager = LocalFocusManager.current
     val submitButton = @Composable {
@@ -254,6 +296,8 @@ fun WorkoutChoiceConfirmation(
     setDurationInput: (String) -> Unit,
     datePicker: DatePickerDialog,
     hideKeyboard: Boolean,
+    viewModel: WorkoutDiaryViewModel,
+    activityState: ActivityState,
     setHideKeyboard: (Boolean) -> Unit
 ) {
 
@@ -333,13 +377,13 @@ fun WorkoutChoiceConfirmation(
             )
             InputBox(
                 label = "Minutes",
-                value = durationInput,
+                value = activityState.duration.toString(),
                 onValueChange = { setDurationInput(it) },
                 interactionSource = durationInteraction.also { interactionSource ->
                     LaunchedEffect(interactionSource) {
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                setDurationInput("")
+                                setDurationInput("0")
                             }
                         }
                     }
