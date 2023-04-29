@@ -14,8 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fi.threebyeight.workoutdiary.Database.activitiesWithTypeNames
 import fi.threebyeight.workoutdiary.R
-import fi.threebyeight.workoutdiary.model.DummyRecord
-import fi.threebyeight.workoutdiary.model.dummyData
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.ScreenTitle
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -30,7 +28,8 @@ fun JournalScreen(data: List<activitiesWithTypeNames>) {
 @Composable
 fun JournalList(records: List<activitiesWithTypeNames>) {
     LazyColumn(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
+        reverseLayout = true
     ) {
         items(records) { record ->
             Row(
@@ -38,7 +37,7 @@ fun JournalList(records: List<activitiesWithTypeNames>) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = record.activities.date.toString(),
+                    text = record.activities.date,
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
                 Text(
