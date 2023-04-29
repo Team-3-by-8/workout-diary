@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.threebyeight.workoutdiary.Events.ActivityEvent
+import fi.threebyeight.workoutdiary.Events.TypeEvent
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SaveRecordConfirmation
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionButton
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.WorkoutRecord
@@ -107,6 +108,7 @@ fun RecordingScreen(
                     leftChoice = {
                         navController.navigate("Workout")
                         viewModel.onActivityEvent(ActivityEvent.SaveActivity)
+                        viewModel.onTypeEvent(TypeEvent.setName(""))
                     },
                     rightChoice = { screenState = State.PAUSED },
                     rightButtonColor = MaterialTheme.colors.primaryVariant

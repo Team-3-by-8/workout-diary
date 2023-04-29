@@ -142,6 +142,7 @@ fun SelectionMain(
                 leftChoice = {
                     navController.navigate("Workout")
                     viewModel.onActivityEvent(ActivityEvent.SaveActivity)
+                    viewModel.onTypeEvent(TypeEvent.setName(""))
                 },
                 rightChoice = { readyToSave = false }
             )
