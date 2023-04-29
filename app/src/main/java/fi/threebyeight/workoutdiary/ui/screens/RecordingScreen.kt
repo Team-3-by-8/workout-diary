@@ -9,10 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import fi.threebyeight.workoutdiary.Events.ActivityEvent
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SaveRecordConfirmation
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.SelectionButton
 import fi.threebyeight.workoutdiary.ui.screens.commonElements.WorkoutRecord
 import fi.threebyeight.workoutdiary.ui.theme.LightGrey
+import fi.threebyeight.workoutdiary.viewmodel.WorkoutDiaryViewModel
 
 enum class State {
     RUNNING, PAUSED, CONFIRM_CANCEL, CONFIRM_SAVE
@@ -22,7 +24,8 @@ enum class State {
 fun RecordingScreen(
     navController: NavController,
     chosenWorkout: String,
-    currentDate: String
+    currentDate: String,
+    viewModel: WorkoutDiaryViewModel
 ) {
     val workoutDuration = 602
     var seconds: Int = workoutDuration
@@ -101,7 +104,10 @@ fun RecordingScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 SaveRecordConfirmation(
                     "Save the record?",
-                    leftChoice = { navController.navigate("Workout") },
+                    leftChoice = {
+                        navController.navigate("Workout")
+                        viewModel.onActivityEvent(ActivityEvent.SaveActivity)
+                    },
                     rightChoice = { screenState = State.PAUSED },
                     rightButtonColor = MaterialTheme.colors.primaryVariant
                 )

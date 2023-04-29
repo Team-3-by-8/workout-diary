@@ -102,7 +102,7 @@ fun SelectionMain(
                 typeState
             ) { hideKeyboard = it }
         } else if (letsRecord) {
-            RecordingScreen(navController, chosenWorkout, currentDate())
+            RecordingScreen(navController, chosenWorkout, currentDate(), viewModel)
         } else if (!readyToSave) {
             ScreenSubTitle("Select Workout")
             WorkoutChoiceConfirmation(
