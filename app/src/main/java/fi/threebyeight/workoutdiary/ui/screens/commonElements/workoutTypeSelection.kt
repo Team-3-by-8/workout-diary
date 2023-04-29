@@ -139,8 +139,10 @@ fun SelectionMain(
             Spacer(modifier = Modifier.weight(1f))
             SaveRecordConfirmation(
                 "Save the record?",
-                leftChoice = { viewModel.onActivityEvent(ActivityEvent.SaveActivity) },
-//                leftChoice = { navController.navigate("Workout") },
+                leftChoice = {
+                    navController.navigate("Workout")
+                    viewModel.onActivityEvent(ActivityEvent.SaveActivity)
+                },
                 rightChoice = { readyToSave = false }
             )
         }
@@ -463,7 +465,7 @@ fun SaveRecordConfirmation(
     rightChoice: () -> Unit,
     rightButtonColor: Color = Color.LightGray,
     rightButtonText: String = "No",
-    ) {
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
