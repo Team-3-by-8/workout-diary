@@ -28,10 +28,9 @@ fun JournalScreen(data: List<activitiesWithTypeNames>) {
 @Composable
 fun JournalList(records: List<activitiesWithTypeNames>) {
     LazyColumn(
-        modifier = Modifier.padding(8.dp),
-        reverseLayout = true
+        modifier = Modifier.padding(8.dp)
     ) {
-        items(records) { record ->
+        items(records.reversed()) { record ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

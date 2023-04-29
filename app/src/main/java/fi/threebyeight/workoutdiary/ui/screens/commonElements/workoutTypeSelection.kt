@@ -186,7 +186,7 @@ fun WorkoutTypeSelection(
             .padding(top = 0.dp)
             .fillMaxWidth()
     ) {
-        items(types) { type ->
+        items(types.reversed()) { type ->
             SelectionButton(
                 title = type.name,
                 onClick = { setChosenWorkout(type.name) },
