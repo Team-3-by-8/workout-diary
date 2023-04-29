@@ -93,8 +93,8 @@ fun SelectionMain(
             ScreenSubTitle("Select Workout")
             WorkoutTypeSelection(
                 setChosenWorkout = {
-                    chosenWorkout = it
-                    viewModel.onTypeEvent(TypeEvent.setName(it))
+                    chosenWorkout = it.trim()
+                    viewModel.onTypeEvent(TypeEvent.setName(it.trim()))
                 },
                 typeState.types,
                 hideKeyboard,
