@@ -44,9 +44,13 @@ class WorkoutDiaryViewModel(private val repository: database_Repository) : ViewM
                 viewModelScope.launch {
                     onTypeEvent(TypeEvent.SaveType)
                 }
-                Thread.sleep(1_000)
+                Thread.sleep(1000)
+                viewModelScope.launch {
+                    onActivityEvent(ActivityEvent.setType_id(repository.getTypeByName(typeState.value.name)[0].id!!))
+                }
+
                 val date = activityState.value.date
-                val type_id = repository.getTypeByName(typeState.value.name)[0].id!!
+                val type_id = activityState.value.type_id
                 val duration = activityState.value.duration
                 val max_HR = activityState.value.max_HR
                 val min_HR = activityState.value.min_HR

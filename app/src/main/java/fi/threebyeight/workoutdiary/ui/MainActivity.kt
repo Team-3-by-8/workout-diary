@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             workout_diary_db::class.java,
             "workout_diary.db"
-        ).allowMainThreadQueries().build()
+        ).build()
     }
 
     private val viewModel by viewModels<WorkoutDiaryViewModel>(
